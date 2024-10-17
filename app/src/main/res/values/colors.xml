@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="appname">#38AFF8</color>
+    <color name="label">#38AFF8</color>
+    <color name="form">#0E95E9</color>
+    <color name="text">#000000</color>
+    <color name="Link">#0275C6</color>
 </resources>
