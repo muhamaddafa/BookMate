@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "14134522289",
+    "project_id": "uts---bookmate",
+    "storage_bucket": "uts---bookmate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14134522289:android:c4b49552b83eac1c358d90",
+        "android_client_info": {
+          "package_name": "com.sumberrejeki.bookmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9_5TcT0SGQT9prJA-e5bhoUa9KCj2Bs0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
