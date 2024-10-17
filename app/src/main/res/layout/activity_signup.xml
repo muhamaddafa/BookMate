@@ -2,7 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fitsSystemWindows="true">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,17 +27,19 @@
             android:textSize="30sp"
             android:textStyle="bold" />
 
+        <!--App Name-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="WELCOME BACK!"
+            android:text="HELLO THERE!"
             android:textColor="@color/label"
             android:textSize="30sp"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp" />
 
+        <!--Input username-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,6 +67,7 @@
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!--Input Password-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +80,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="60dp"
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="@color/label">
 
@@ -92,27 +95,15 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/forgotPasswordLink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:textColor="@color/Link"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="44dp"
-            android:clickable="true"
-            android:focusable="true" />
-
+        <!--Register Button-->
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/signupButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/gradient_color"
-            android:text="LOGIN"
+            android:text="REGISTER"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="15sp" />
@@ -145,10 +136,9 @@
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="@color/label" />
-
         </LinearLayout>
 
-
+        <!--Register With Google-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -168,13 +158,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login With Google"
+                android:text="Register With Google"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-
+        <!--Navigation to Login Activity-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -186,23 +176,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Doesn't Have an Account?"
+                android:text="Have an Account?"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:layout_marginEnd="5dp" />
 
             <TextView
-                android:id="@+id/signupLink"
+                android:id="@+id/loginLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register Here"
+                android:text="Login Here"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@color/Link"
                 android:clickable="true"
                 android:focusable="true" />
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>
