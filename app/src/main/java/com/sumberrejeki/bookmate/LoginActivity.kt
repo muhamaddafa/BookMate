@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import android.content.SharedPreferences
+import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,20 +23,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var linkSignup: TextView
     private lateinit var auth: FirebaseAuth
-//    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-//        sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE)
-//
-//        // Cek apakah user sudah pernah login
-//        if (sharedPreferences.getBoolean("isLoggedIn", false)) {
-//            // Jika sudah login, langsung pindah ke MainActivity
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish() // Tutup LoginActivity
-//        }
 
         email = findViewById(R.id.emailInput)
         password = findViewById(R.id.passwordInput)
@@ -41,6 +39,15 @@ class LoginActivity : AppCompatActivity() {
 
         // Initialize FirebaseAuth
         auth = FirebaseAuth.getInstance()
+
+        // Konfigurasi Google Sign-In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
 
         linkForgotPassword = findViewById(R.id.forgotPasswordLink)
 
@@ -54,8 +61,14 @@ class LoginActivity : AppCompatActivity() {
             loginUser()
         }
 
+        val googleButton = findViewById<LinearLayout>(R.id.googleButton)
+        googleButton.setOnClickListener {
+            signInWithGoogle()
+        }
+
+
         linkSignup.setOnClickListener {
-            // Navigasi ke halaman Signup
+            // Navigate to SignupActivity
             startActivity(Intent(this, SignupActivity::class.java))
         }
     }
@@ -65,23 +78,52 @@ class LoginActivity : AppCompatActivity() {
         val password = password.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Email and Password must be Filled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Email and Password must be filled", Toast.LENGTH_SHORT).show()
             return
         }
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-//                    val editor = sharedPreferences.edit()
-//                    editor.putBoolean("isLoggedIn", true)
-//                    editor.apply()
-
-                    // Login berhasil, masuk ke Home
-                    Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                    // Login successful, proceed to HomeActivity
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
-                    Toast.makeText(this, "Login failed: Incorect Email or Password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Login failed: Incorrect Email or Password", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    firebaseAuthWithGoogle(account.idToken!!)
+                }
+            } catch (e: ApiException) {
+                Toast.makeText(this, "Google Login failed.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, navigate to MainActivity
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
                 }
             }
     }

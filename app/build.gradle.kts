@@ -47,7 +47,8 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.crashlytics)
     implementation("com.google.firebase:firebase-auth:21.1.0")
-    implementation("com.google.android.gms:play-services-auth:20.2.0")
+    implementation ("com.google.android.gms:play-services-auth:20.6.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
