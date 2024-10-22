@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
+            android:text="Username"
             android:textColor="@color/text"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -101,7 +101,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginBottom="44dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:focusable="true" />
 
@@ -148,8 +148,8 @@
 
         </LinearLayout>
 
-
         <LinearLayout
+            android:id="@+id/googleButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

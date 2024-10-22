@@ -30,7 +30,7 @@ class ForgotpasswordActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         resetButton.setOnClickListener {
-            val email = emailInput.text.toString()
+            val email = emailInput.text.toString().trim()
 
             if (email.isEmpty()) {
                 Toast.makeText(this, "Please Input your Email", Toast.LENGTH_SHORT).show()
@@ -38,14 +38,14 @@ class ForgotpasswordActivity : AppCompatActivity() {
             }
 
             auth.sendPasswordResetEmail(email)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Reset Email Sent", Toast.LENGTH_SHORT).show()
-                        finish() //Balik Lagi Ke Login Bro
-                    } else {
-                        Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+    .addOnCompleteListener { resetTask ->
+        if (resetTask.isSuccessful) {
+            Toast.makeText(this, "Reset Email Sent", Toast.LENGTH_SHORT).show()
+            finish() //Balik Lagi Ke Login Bro
+        } else {
+            Toast.makeText(this, "Error: ${resetTask.exception?.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
         }
     }
     override fun onSupportNavigateUp(): Boolean {
