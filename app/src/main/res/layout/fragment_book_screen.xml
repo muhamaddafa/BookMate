@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/drawable_image"
+    android:background="@drawable/ic_launcher_background"
     android:fitsSystemWindows="true">
 
     <LinearLayout

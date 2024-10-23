@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:fitsSystemWindows="true"
     android:isScrollContainer="true"
-    android:background="@drawable/background_pattern"
+    android:background="@drawable/ic_launcher_background"
     tools:context=".EditBookActivity">
 
     <LinearLayout
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
@@ -100,7 +100,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -115,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Author"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
@@ -126,7 +126,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -141,7 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Publisher"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
@@ -152,7 +152,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -167,7 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Total Pages"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
@@ -178,7 +178,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
