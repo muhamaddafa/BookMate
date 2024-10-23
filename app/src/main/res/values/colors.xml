@@ -3,6 +3,8 @@
     <color name="Lochmara_400">#38AFF8</color> //Label, Appname
     <color name="Lochmara_500">#0E95E9</color> //Form
     <color name="Black">#000000</color> //Text
+    <color name="White">#FFFFFF</color>
     <color name="Lochmara_600">#0275C6</color> //Link
+    <color name="Lochmara_800">#075085</color>
     <color name="hint_colour">#FFFFFF</color>
 </resources>
