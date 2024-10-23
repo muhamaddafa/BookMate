@@ -31,7 +31,7 @@
                     android:gravity="center"
                     android:paddingTop="37dp"
                     android:textSize="30dp"
-                    android:text="TextView" />
+                    android:text="Profile" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -48,8 +48,8 @@
                     android:textColor="@color/text"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="8dp" />
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_edit_text"
                         android:drawableEnd="@drawable/edit_text"
-                        android:hint="@string/input_email"
+                        android:hint="@string/input_username"
                         android:hintTextColor="@colors/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
@@ -97,7 +97,263 @@
                         android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    android:textColor="@color/text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lastNameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_edit_text"
+                        android:drawableEnd="@drawable/edit_text"
+                        android:hint="@string/input_last_name"
+                        android:hintTextColor="@colors/hint_colour"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="13dp"
+                        android:textSize="12sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@color/text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_edit_text"
+                        android:drawableEnd="@drawable/edit_text"
+                        android:hint="@string/email_input"
+                        android:hintTextColor="@colors/hint_colour"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="13dp"
+                        android:textSize="12sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textColor="@color/text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/addressInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_edit_text"
+                        android:drawableEnd="@drawable/edit_text"
+                        android:hint="@string/address_input"
+                        android:hintTextColor="@colors/hint_colour"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="13dp"
+                        android:textSize="12sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="2"
+                    android:layout_marginBottom="10dp">
+
+                    <!-- City Input -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="City"
+                            android:textColor="@color/text"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="8dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginRight="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/cityInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_edit_text"
+                                android:drawableEnd="@drawable/edit_text"
+                                android:hint="@string/input_city"
+                                android:hintTextColor="@color/hint_colour"
+                                android:inputType="text"
+                                android:paddingStart="13dp"
+                                android:textSize="12sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- State Input -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="State"
+                            android:textColor="@color/text"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="8dp"
+                            android:layout_marginLeft="10dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/stateInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_edit_text"
+                                android:drawableEnd="@drawable/edit_text"
+                                android:hint="@string/input_state"
+                                android:hintTextColor="@color/hint_colour"
+                                android:inputType="text"
+                                android:paddingStart="13dp"
+                                android:textSize="12sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- ZipCode Input -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="ZipCode"
+                            android:textColor="@color/text"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="8dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginRight="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/zipCodeInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_edit_text"
+                                android:drawableEnd="@drawable/edit_text"
+                                android:hint="@string/input_zipCode"
+                                android:hintTextColor="@color/hint_colour"
+                                android:inputType="text"
+                                android:paddingStart="13dp"
+                                android:textSize="12sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+
+                    <!-- Country Input -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Country"
+                            android:textColor="@color/text"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="8dp"
+                            android:layout_marginLeft="10dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/countryInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_edit_text"
+                                android:drawableEnd="@drawable/edit_text"
+                                android:hint="@string/input_country"
+                                android:hintTextColor="@color/hint_colour"
+                                android:inputType="text"
+                                android:paddingStart="13dp"
+                                android:textSize="12sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                </GridLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="Change Password Here!"
+                    android:textColor="#2196F3"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Logout"
+                    android:backgroundTint="#0E95E9"/>
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

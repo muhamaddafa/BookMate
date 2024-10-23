@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="form">#0E95E9</color>
+    <color name="text">#000000</color>
+    <color name="hint_colour">#FFFFFF</color>
 </resources>
