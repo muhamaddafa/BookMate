@@ -6,4 +6,5 @@
     <color name="White">#FFFFFF</color>
     <color name="Lochmara_600">#0275C6</color> //Link
     <color name="Lochmara_800">#075085</color>
+    <color name="hint_colour">#FFFFFF</color>
 </resources>
