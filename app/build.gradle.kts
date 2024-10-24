@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("com.google.android.material:material:1.5.0")
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
 
 
     testImplementation(libs.junit)
