@@ -56,8 +56,11 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
+    implementation(libs.play.services.location)
+    implementation(libs.places)
 
 
     testImplementation(libs.junit)

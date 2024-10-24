@@ -12,5 +12,7 @@
     <string name="input_country">Input Country</string>
     <string name="default_web_client_id">14134522289-tv5bh6kdu8c8ltqusufat10gn6c43mvu.apps.googleusercontent.com</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="AddTitle"><u>Add Title</u></string>
+    <string name="viewAll"><u>View All</u></string>
 </resources>

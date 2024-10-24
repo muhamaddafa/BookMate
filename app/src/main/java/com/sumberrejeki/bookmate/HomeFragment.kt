@@ -1,59 +1,280 @@
 package com.sumberrejeki.bookmate
 
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import android.Manifest
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.sumberrejeki.bookmate.models.Books
+import com.sumberrejeki.bookmate.models.Notes
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : BaseAuthFragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var booksRecyclerView: RecyclerView
+    private lateinit var bookAdapter: BookAdapter
+    private var booksListener: ListenerRegistration? = null
+
+    private lateinit var notesRecyclerView: RecyclerView
+    private lateinit var noteAdapter: NoteAdapter
+    private var notesListener: ListenerRegistration? = null
+
+
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private lateinit var mapView: MapView
+    private lateinit var googleMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), "AIzaSyAbvM4QNppHbjLwPKmCb9kbgKCAh7ysJLE")
+        }
+        mapView = view.findViewById(R.id.mapView)
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync { map ->
+            Log.d(TAG, "Map is ready")
+            googleMap = map
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                googleMap?.isMyLocationEnabled = true
+                getCurrentLocation()
+            } else {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            }
+        }
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        // Initialize Firestore and Auth
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+
+        // Initialize RecyclerView and its adapter
+        booksRecyclerView = view.findViewById(R.id.booksRecyclerView)
+        bookAdapter = BookAdapter()
+        booksRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        booksRecyclerView.adapter = bookAdapter
+
+        notesRecyclerView = view.findViewById(R.id.notesRecyclerView)
+        noteAdapter = NoteAdapter()
+        notesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        notesRecyclerView.adapter = noteAdapter
+
+        // Fetch books for the current user
+        auth.currentUser?.let { user ->
+            fetchBooks(user.uid)
+            fetchNotes(user.uid)
+            fetchUserData()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    private fun fetchUserData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val userId = it.uid
+            val db = FirebaseFirestore.getInstance()
+            val docRef = db.collection("users").document(userId)
+            docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    val username = document.getString("displayName")
+                    val photoUrl = document.getString("photoUrl") // Tambahkan ini
+
+                    // Update UI dengan data yang diambil
+                    view?.findViewById<TextView>(R.id.greetingTextView)?.setText("Hi, $username!")
+
+                    // Memuat gambar menggunakan Glide
+                    val imageView = view?.findViewById<ImageView>(R.id.avatarImageView)
+                    imageView?.let {
+                        Glide.with(this)
+                            .load(photoUrl)
+                            .circleCrop()
+                            .placeholder(R.drawable.image_placeholder) // Gambar placeholder saat loading
+                            .error(R.drawable.image_placeholder) // Gambar error jika gagal memuat
+                            .into(it) // 'it' merujuk pada imageView yang non-null
+                    }
+                }
+            }.addOnFailureListener { exception ->
+                Log.d("ProfileFragment", "get failed with ", exception)
+            }
+        }
+    }
+
+    private fun fetchNotes(userId: String) {
+        notesListener = db.collection("notes")
+            .whereEqualTo("userId", userId)
+            .limit(4)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val notes = snapshot.toObjects(Notes::class.java)
+                    noteAdapter.submitList(notes)
+                }
+            }
+    }
+
+    private fun fetchBooks(userId: String) {
+        booksListener = db.collection("books")
+            .whereEqualTo("userId", userId) // Filter books by user ID
+            .limit(4)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val books = snapshot.toObjects(Books::class.java)
+                    bookAdapter.submitList(books)
+                }
+            }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        booksListener?.remove()
+        notesListener?.remove()
+    }
+
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            location?.let {
+                val currentLatLng = LatLng(it.latitude, it.longitude)
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14f))
+                addNearbyBookstores(currentLatLng)
+            }
+        }
+    }
+
+    private fun addNearbyBookstores(currentLatLng: LatLng) {
+        val placesClient = Places.createClient(requireContext())
+
+        val request = FindCurrentPlaceRequest.newInstance(
+            listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.TYPES)
+        )
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Handle permission not granted
+            return
+        }
+
+        placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
+            for (placeLikelihood in response.placeLikelihoods) {
+                val place = placeLikelihood.place
+                val isBookstore = place.types?.contains(Place.Type.BOOK_STORE) ?: false
+                val nameContainsBookstore = place.name?.toLowerCase(Locale.getDefault())?.let { name ->
+                    name.contains("book") || name.contains("toko buku") ||
+                            name.contains("gramedia") || name.contains("perpustakaan")
+                } ?: false
+
+                if (isBookstore || nameContainsBookstore) {
+                    place.latLng?.let { latLng ->
+                        googleMap.addMarker(
+                            MarkerOptions()
+                                .position(latLng)
+                                .title(place.name)
+                        )
+                    }
+                    Log.d("PlacesAPI", "Found bookstore: ${place.name}")
+                }
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("PlacesAPI", "Error finding bookstores", exception)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // Permission was granted, get the location
+                    googleMap?.isMyLocationEnabled = true
+                    getCurrentLocation()
+                } else {
+                    // Permission denied, handle the failure scenario
+                    // You might want to show a message to the user explaining why the location is needed
+                }
+                return
+            }
+            else -> {
+                // Ignore all other requests
+            }
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        private const val TAG = "HomeFragment"
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }
