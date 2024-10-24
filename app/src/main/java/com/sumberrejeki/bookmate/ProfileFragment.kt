@@ -1,34 +1,21 @@
 package com.sumberrejeki.bookmate
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+class ProfileFragment : BaseAuthFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,23 +24,64 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fetchUserData()
+        view.findViewById<Button>(R.id.logoutButton).setOnClickListener {
+            logoutUser()
+        }
+    }
+
+    private fun fetchUserData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val userId = it.uid
+            val db = FirebaseFirestore.getInstance()
+            val docRef = db.collection("users").document(userId)
+            docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    val username = document.getString("username")
+                    val firstName = document.getString("firstName")
+                    val lastName = document.getString("lastName")
+                    val email = document.getString("email")
+                    val address = document.getString("address")
+                    val city = document.getString("city")
+                    val state = document.getString("state")
+                    val zipCode = document.getString("zipCode")
+                    val country = document.getString("country")
+                    val photoUrl = document.getString("photoUrl") // Tambahkan ini
+
+                    // Update UI dengan data yang diambil
+                    view?.findViewById<TextInputEditText>(R.id.usernameInput)?.setText(username)
+                    view?.findViewById<TextInputEditText>(R.id.firstNameInput)?.setText(firstName)
+                    view?.findViewById<TextInputEditText>(R.id.lastNameInput)?.setText(lastName)
+                    view?.findViewById<TextInputEditText>(R.id.emailInput)?.setText(email)
+                    view?.findViewById<TextInputEditText>(R.id.addressInput)?.setText(address)
+                    view?.findViewById<TextInputEditText>(R.id.cityInput)?.setText(city)
+                    view?.findViewById<TextInputEditText>(R.id.stateInput)?.setText(state)
+                    view?.findViewById<TextInputEditText>(R.id.zipCodeInput)?.setText(zipCode)
+                    view?.findViewById<TextInputEditText>(R.id.countryInput)?.setText(country)
+
+                    // Memuat gambar menggunakan Glide
+                    val imageView = view?.findViewById<ImageView>(R.id.imageView)
+                    imageView?.let {
+                        Glide.with(this)
+                            .load(photoUrl)
+                            .placeholder(R.drawable.image_placeholder) // Gambar placeholder saat loading
+                            .error(R.drawable.image_placeholder) // Gambar error jika gagal memuat
+                            .into(it) // 'it' merujuk pada imageView yang non-null
+                    }
                 }
+            }.addOnFailureListener { exception ->
+                Log.d("ProfileFragment", "get failed with ", exception)
             }
+        }
+    }
+
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(activity, LoginActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
     }
 }

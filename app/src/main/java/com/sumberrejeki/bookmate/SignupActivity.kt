@@ -2,6 +2,7 @@ package com.sumberrejeki.bookmate
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -17,6 +18,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class SignupActivity : AppCompatActivity() {
 
@@ -25,6 +28,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var btnSignup: Button
     private lateinit var linkLogin: TextView
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     private lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 1001
 
@@ -32,21 +36,29 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
+        // Initialize Firebase components
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
+        // Initialize UI components
         email = findViewById(R.id.emailInput)
         password = findViewById(R.id.passwordInput)
         btnSignup = findViewById(R.id.signupButton)
         linkLogin = findViewById(R.id.loginLink)
 
-        // Initialize FirebaseAuth
-        auth = FirebaseAuth.getInstance()
-
+        // Configure Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
+            .requestProfile() // Request profile information
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
         btnSignup.setOnClickListener {
             signupUser()
         }
@@ -56,48 +68,78 @@ class SignupActivity : AppCompatActivity() {
         }
 
         linkLogin.setOnClickListener {
-            // Navigate to LoginActivity
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
-    private fun signupUser() {
-    val email = email.text.toString()
-    val password = password.text.toString()
-
-    if (email.isEmpty() || password.isEmpty()) {
-        Toast.makeText(this, "All fields Must be Filled", Toast.LENGTH_SHORT).show()
-        return
+    private fun saveUserToFirestore(userId: String, userData: Map<String, Any>) {
+        db.collection("users").document(userId)
+            .set(userData, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.d("Firestore", "User data saved successfully")
+                proceedToMainActivity()
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error saving user data", e)
+                Toast.makeText(this, "Failed to save user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                proceedToMainActivity()
+            }
     }
 
-    auth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Signup successful, proceed to HomeActivity
-                Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            } else {
-                if (task.exception is FirebaseAuthUserCollisionException) {
-                    Toast.makeText(this, "Your Email is Already Registered", Toast.LENGTH_SHORT).show()
+    private fun proceedToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    private fun signupUser() {
+        val emailStr = email.text.toString().trim()
+        val passwordStr = password.text.toString().trim()
+
+        if (emailStr.isEmpty() || passwordStr.isEmpty()) {
+            Toast.makeText(this, "All fields Must be Filled", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        btnSignup.isEnabled = false
+
+        auth.createUserWithEmailAndPassword(emailStr, passwordStr)
+            .addOnCompleteListener { task ->
+                btnSignup.isEnabled = true
+
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    if (user != null) {
+                        // Create user data for Firestore
+                        val userData = hashMapOf(
+                            "email" to emailStr,
+                            "createdAt" to System.currentTimeMillis(),
+                            "lastLoginAt" to System.currentTimeMillis(),
+                            "signupMethod" to "email"
+                        )
+
+                        saveUserToFirestore(user.uid, userData)
+                        Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(this, "Signup failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    if (task.exception is FirebaseAuthUserCollisionException) {
+                        Toast.makeText(this, "Your Email is Already Registered", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Signup failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
     }
 
     private fun signInWithGoogle() {
-    googleSignInClient.signOut().addOnCompleteListener {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
     }
-}
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Hasil dari aktivitas Google Sign-In
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
@@ -107,21 +149,39 @@ class SignupActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)!!
-            firebaseAuthWithGoogle(account.idToken!!)
+            firebaseAuthWithGoogle(account.idToken!!, account)
         } catch (e: ApiException) {
+            Log.e("Google Sign In", "Google sign in failed", e)
             Toast.makeText(this, "Google Sign-In Failed: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun firebaseAuthWithGoogle(idToken: String, account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign-in sukses, lanjutkan ke MainActivity
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    val user = auth.currentUser
+                    if (user != null) {
+                        // Create user data with Google profile information
+                        val userData = hashMapOf(
+                            "email" to (account.email ?: ""),
+                            "firstName" to (account.givenName ?: ""),
+                            "lastName" to (account.familyName ?: ""),
+                            "displayName" to (account.displayName ?: ""),
+                            "photoUrl" to (account.photoUrl?.toString() ?: ""),
+                            "createdAt" to System.currentTimeMillis(),
+                            "lastLoginAt" to System.currentTimeMillis(),
+                            "signupMethod" to "google"
+                        )
+
+                        saveUserToFirestore(user.uid, userData)
+                    } else {
+                        Toast.makeText(this, "Error: Unable to get user data", Toast.LENGTH_SHORT).show()
+                        proceedToMainActivity()
+                    }
                 } else {
+                    Log.e("Google Auth", "Authentication failed", task.exception)
                     Toast.makeText(this, "Authentication Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
