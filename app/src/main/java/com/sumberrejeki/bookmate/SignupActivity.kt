@@ -23,6 +23,9 @@ import com.google.firebase.firestore.SetOptions
 
 class SignupActivity : AppCompatActivity() {
 
+    private lateinit var username: EditText
+    private lateinit var firstName: EditText
+    private lateinit var lastName: EditText
     private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var btnSignup: Button
@@ -41,6 +44,9 @@ class SignupActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         // Initialize UI components
+        username = findViewById(R.id.usernameInput)
+        firstName = findViewById(R.id.firstNameInput)
+        lastName = findViewById(R.id.lastNameInput)
         email = findViewById(R.id.emailInput)
         password = findViewById(R.id.passwordInput)
         btnSignup = findViewById(R.id.signupButton)
@@ -92,11 +98,14 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun signupUser() {
+        val usernameStr = username.text.toString().trim()
+        val firstNameStr = firstName.text.toString().trim()
+        val lastNameStr = lastName.text.toString().trim()
         val emailStr = email.text.toString().trim()
         val passwordStr = password.text.toString().trim()
 
-        if (emailStr.isEmpty() || passwordStr.isEmpty()) {
-            Toast.makeText(this, "All fields Must be Filled", Toast.LENGTH_SHORT).show()
+        if (usernameStr.isEmpty() || firstNameStr.isEmpty() || lastNameStr.isEmpty() || emailStr.isEmpty() || passwordStr.isEmpty()) {
+            Toast.makeText(this, "All fields must be filled", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -111,6 +120,9 @@ class SignupActivity : AppCompatActivity() {
                     if (user != null) {
                         // Create user data for Firestore
                         val userData = hashMapOf(
+                            "displayName" to usernameStr,
+                            "firstName" to firstNameStr,
+                            "lastName" to lastNameStr,
                             "email" to emailStr,
                             "createdAt" to System.currentTimeMillis(),
                             "lastLoginAt" to System.currentTimeMillis(),
