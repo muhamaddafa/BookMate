@@ -23,7 +23,7 @@
             android:gravity="center"
             android:layout_marginBottom="40dp"
             android:text="BookMate"
-            android:textColor="@color/appname"
+            android:textColor="@color/Lochmara_400"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="WELCOME BACK!"
-            android:textColor="@color/label"
+            android:textColor="@color/Lochmara_400"
             android:textSize="30sp"
             android:textStyle="bold"
             android:layout_gravity="center"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp" />
@@ -52,7 +52,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailInput"
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp" />
@@ -79,7 +79,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordInput"
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
-            android:textColor="@color/Link"
+            android:textColor="@color/Lochmara_600"
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -129,13 +129,13 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="@color/label" />
+                android:background="@color/Lochmara_400" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OR"
-                android:textColor="@color/label"
+                android:textColor="@color/Lochmara_400"
                 android:textSize="16sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp" />
@@ -144,7 +144,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="@color/label" />
+                android:background="@color/Lochmara_400" />
 
         </LinearLayout>
 
@@ -199,7 +199,7 @@
                 android:text="Register Here"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/Link"
+                android:textColor="@color/Lochmara_600"
                 android:clickable="true"
                 android:focusable="true" />
         </LinearLayout>

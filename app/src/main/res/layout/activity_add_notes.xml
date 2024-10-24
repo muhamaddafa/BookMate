@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <!-- Toolbar dengan ikon navigasi dan dua ikon di sebelah kanan -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:elevation="40dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:navigationIcon="@drawable/arrow_back" >
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- Ikon-ikon di kanan toolbar -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:padding="10dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/image_icon"
+                app:tint="@color/Lochmara_600"
+                android:layout_marginEnd="5dp" />
+
+            <ImageView
+                android:id="@+id/check_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/checkbox_icon"
+                app:tint="@color/Lochmara_600"
+                android:layout_marginStart="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Bagian untuk judul Notes dan tanggal -->
+    <TextView
+        android:id="@+id/notes_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NOTES"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/Black"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Tanggal dan Waktu -->
+    <LinearLayout
+        android:id="@+id/dateTimeContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10/10/1009"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/Lochmara_500" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 8:10"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/Lochmara_500"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+    <!-- Deskripsi Catatan -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/notes_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your notes here..."
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:background="#F1F1F1"
+            android:minHeight="200dp"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical" />
+
+    </ScrollView>
+
+</LinearLayout>

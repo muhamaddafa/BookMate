@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LibraryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Bagian Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="140dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Library"
+                android:textColor="@color/Lochmara_500"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <!-- Bagian Pencarian -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/border_2px"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_search_24"
+                android:layout_marginStart="11.91dp"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/Lochmara_500" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Search"
+                android:padding="8dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/Lochmara_500"
+                android:textSize="16sp"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <!-- Tombol Book List dan Add New Shelves -->
+        <Button
+            android:id="@+id/bookListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/gradient_color"
+            android:text="Book List"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp" />
+
+        <Button
+            android:id="@+id/newShelvesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/gradient_color"
+            android:text="Add New Shelves"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
+
+        <!-- Bagian ScrollView Konten Buku -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:background="@android:color/white">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <!-- Gambar Buku -->
+                    <ImageView
+                        android:id="@+id/bookImageView1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/border_2px"
+                        app:layout_constraintWidth_percent="0.3"
+                        app:layout_constraintDimensionRatio="2:3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <!-- Judul dan Deskripsi Buku -->
+                    <LinearLayout
+                        android:id="@+id/bookInfoLayout1"
+                        android:layout_marginStart="120dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/bookImageView1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toStartOf="@id/editButton1"
+                        android:layout_marginEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/bookTitleTextView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shelve Title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:id="@+id/bookDescriptionTextView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Book Description in Here. We Good We Good"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                    <!-- Tombol Edit -->
+                    <Button
+                        android:id="@+id/editButton1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit"
+                        android:drawableEnd="@drawable/baseline_edit_black_24"
+                        android:drawablePadding="4dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/border_2px"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:background="@android:color/white">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <!-- Gambar Buku -->
+                    <ImageView
+                        android:id="@+id/bookImageView2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/border_2px"
+                        app:layout_constraintWidth_percent="0.3"
+                        app:layout_constraintDimensionRatio="2:3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <!-- Judul dan Deskripsi Buku -->
+                    <LinearLayout
+                        android:id="@+id/bookInfoLayout2"
+                        android:layout_marginStart="120dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/bookImageView2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toStartOf="@id/editButton2"
+                        android:layout_marginEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/bookTitleTextView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shelve Title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:id="@+id/bookDescriptionTextView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Book Description in Here. We Good We Good"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                    <!-- Tombol Edit -->
+                    <Button
+                        android:id="@+id/editButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit"
+                        android:drawableEnd="@drawable/baseline_edit_black_24"
+                        android:drawablePadding="4dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/border_2px"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:background="@android:color/white">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <!-- Gambar Buku -->
+                    <ImageView
+                        android:id="@+id/bookImageView3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/border_2px"
+                        app:layout_constraintWidth_percent="0.3"
+                        app:layout_constraintDimensionRatio="2:3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <!-- Judul dan Deskripsi Buku -->
+                    <LinearLayout
+                        android:id="@+id/bookInfoLayout3"
+                        android:layout_marginStart="120dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/bookImageView3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toStartOf="@id/editButton3"
+                        android:layout_marginEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/bookTitleTextView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shelve Title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:id="@+id/bookDescriptionTextView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Book Description in Here. We Good We Good"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                    <!-- Tombol Edit -->
+                    <Button
+                        android:id="@+id/editButton3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit"
+                        android:drawableEnd="@drawable/baseline_edit_black_24"
+                        android:drawablePadding="4dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/border_2px"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Tambahkan CardView lainnya di sini jika diperlukan -->
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

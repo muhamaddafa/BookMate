@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:padding="15dp">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="15dp">
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="200dp"
@@ -23,7 +24,7 @@
             android:gravity="center"
             android:layout_marginBottom="40dp"
             android:text="BookMate"
-            android:textColor="@color/appname"
+            android:textColor="@color/Lochmara_400"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="HELLO THERE!"
-            android:textColor="@color/label"
+            android:textColor="@color/Lochmara_400"
             android:textSize="30sp"
             android:textStyle="bold"
             android:layout_gravity="center"
@@ -43,8 +44,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textColor="@color/text"
+            android:text="Username"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp" />
@@ -54,7 +55,92 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="13dp"
+                android:textSize="12sp"
+                android:background="@drawable/rounded_edit_text"
+                android:hint="Input Username"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Input FirstName-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="First Name"
+            android:textColor="@color/Black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/Lochmara_400">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="13dp"
+                android:textSize="12sp"
+                android:background="@drawable/rounded_edit_text"
+                android:hint="Input First Name"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--Input LastName-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last Name"
+            android:textColor="@color/Black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/Lochmara_400">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="13dp"
+                android:textSize="12sp"
+                android:background="@drawable/rounded_edit_text"
+                android:hint="Input Last Name"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Input Email-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@color/Black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailInput"
@@ -72,7 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textColor="@color/text"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp" />
@@ -82,7 +168,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="30dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/label">
+            app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordInput"
@@ -120,13 +206,13 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="@color/label" />
+                android:background="@color/Lochmara_400" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OR"
-                android:textColor="@color/label"
+                android:textColor="@color/Lochmara_400"
                 android:textSize="16sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp" />
@@ -135,7 +221,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="@color/label" />
+                android:background="@color/Lochmara_400" />
         </LinearLayout>
 
         <!--Register With Google-->
@@ -190,7 +276,7 @@
                 android:text="Login Here"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/Link"
+                android:textColor="@color/Lochmara_600"
                 android:clickable="true"
                 android:focusable="true" />
         </LinearLayout>
