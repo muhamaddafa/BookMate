@@ -63,7 +63,7 @@
                         android:background="@drawable/rounded_edit_text"
                         android:drawableEnd="@drawable/edit_text"
                         android:hint="@string/input_username"
-                        android:hintTextColor="@colors/hint_colour"
+                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -91,7 +91,7 @@
                         android:background="@drawable/rounded_edit_text"
                         android:drawableEnd="@drawable/edit_text"
                         android:hint="@string/input_first_name"
-                        android:hintTextColor="@colors/hint_colour"
+                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -119,7 +119,7 @@
                         android:background="@drawable/rounded_edit_text"
                         android:drawableEnd="@drawable/edit_text"
                         android:hint="@string/input_last_name"
-                        android:hintTextColor="@colors/hint_colour"
+                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -147,7 +147,7 @@
                         android:background="@drawable/rounded_edit_text"
                         android:drawableEnd="@drawable/edit_text"
                         android:hint="@string/email_input"
-                        android:hintTextColor="@colors/hint_colour"
+                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -175,7 +175,7 @@
                         android:background="@drawable/rounded_edit_text"
                         android:drawableEnd="@drawable/edit_text"
                         android:hint="@string/address_input"
-                        android:hintTextColor="@colors/hint_colour"
+                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -217,7 +217,7 @@
                                 android:background="@drawable/rounded_edit_text"
                                 android:drawableEnd="@drawable/edit_text"
                                 android:hint="@string/input_city"
-                                android:hintTextColor="@color/hint_colour"
+                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
@@ -254,7 +254,7 @@
                                 android:background="@drawable/rounded_edit_text"
                                 android:drawableEnd="@drawable/edit_text"
                                 android:hint="@string/input_state"
-                                android:hintTextColor="@color/hint_colour"
+                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
@@ -291,7 +291,7 @@
                                 android:background="@drawable/rounded_edit_text"
                                 android:drawableEnd="@drawable/edit_text"
                                 android:hint="@string/input_zipCode"
-                                android:hintTextColor="@color/hint_colour"
+                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
@@ -330,7 +330,7 @@
                                 android:background="@drawable/rounded_edit_text"
                                 android:drawableEnd="@drawable/edit_text"
                                 android:hint="@string/input_country"
-                                android:hintTextColor="@color/hint_colour"
+                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
