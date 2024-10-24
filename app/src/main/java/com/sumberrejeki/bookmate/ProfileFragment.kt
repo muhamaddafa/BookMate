@@ -40,7 +40,7 @@ class ProfileFragment : BaseAuthFragment() {
             val docRef = db.collection("users").document(userId)
             docRef.get().addOnSuccessListener { document ->
                 if (document != null) {
-                    val username = document.getString("username")
+                    val username = document.getString("displayName")
                     val firstName = document.getString("firstName")
                     val lastName = document.getString("lastName")
                     val email = document.getString("email")
