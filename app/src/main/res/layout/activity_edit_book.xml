@@ -8,7 +8,6 @@
     android:fillViewport="true"
     android:fitsSystemWindows="true"
     android:isScrollContainer="true"
-    android:background="@drawable/background_pattern"
     tools:context=".EditBookActivity">
 
     <LinearLayout
@@ -23,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingBottom="16dp">
+            android:gravity="center_vertical|start"
+            android:layout_marginBottom="8dp">
 
             <ImageView
                 android:layout_width="48dp"
@@ -35,15 +34,19 @@
                 app:tint="@android:color/holo_blue_dark" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Edit Book"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="32sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="64dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical|start" />
+                android:gravity="center_horizontal" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                />
         </LinearLayout>
 
         <!-- Book Cover -->
