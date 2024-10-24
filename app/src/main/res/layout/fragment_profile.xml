@@ -346,12 +346,15 @@
                     android:layout_marginTop="20dp"
                     android:text="Change Password Here!"
                     android:textColor="#2196F3"/>
+
                 <Button
+                    android:id="@+id/logoutButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="Logout"
                     android:backgroundTint="#0E95E9"/>
+
             </LinearLayout>
 
         </ScrollView>
