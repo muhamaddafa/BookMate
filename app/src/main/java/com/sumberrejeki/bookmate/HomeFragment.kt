@@ -42,7 +42,6 @@ class HomeFragment : BaseAuthFragment() {
     private lateinit var noteAdapter: NoteAdapter
     private var notesListener: ListenerRegistration? = null
 
-
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var mapView: MapView
@@ -87,8 +86,8 @@ class HomeFragment : BaseAuthFragment() {
         booksRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         booksRecyclerView.adapter = bookAdapter
 
-        notesRecyclerView = view.findViewById(R.id.notesRecyclerView)
-        noteAdapter = NoteAdapter()
+        notesRecyclerView = view.findViewById(R.id.recentNotesRecyclerView)
+        noteAdapter = NoteAdapter(isHomeFragment = true)
         notesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         notesRecyclerView.adapter = noteAdapter
 
