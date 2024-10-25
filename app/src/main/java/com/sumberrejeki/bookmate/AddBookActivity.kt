@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -43,6 +44,11 @@ class AddBookActivity : AppCompatActivity() {
         val addBookButton = findViewById<Button>(R.id.addBookButton)
         addBookButton.setOnClickListener {
             uploadImageAndAddBookToFirestore()
+        }
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
     }
 
