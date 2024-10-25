@@ -44,6 +44,15 @@
                     android:layout_marginTop="16dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+                <TextView
+                    android:id="@+id/emptyBooksMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No books added yet"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp"/>
+
                 <LinearLayout
                     android:id="@+id/recentNotesLayout"
                     android:layout_width="match_parent"
@@ -80,6 +89,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/emptyNotesMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No notes added yet"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp"/>
 
                 <!-- Maps of Bookstore Around -->
                 <LinearLayout

@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.Intent
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -48,6 +49,9 @@ class HomeFragment : BaseAuthFragment() {
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var emptyBooksMessage: TextView
+    private lateinit var emptyNotesMessage: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,6 +104,9 @@ class HomeFragment : BaseAuthFragment() {
             fetchNotes(user.uid)
             fetchUserData()
         }
+
+        emptyBooksMessage = view.findViewById(R.id.emptyBooksMessage)
+        emptyNotesMessage = view.findViewById(R.id.emptyNotesMessage)
     }
 
     private fun fetchUserData() {
@@ -146,6 +153,14 @@ class HomeFragment : BaseAuthFragment() {
                 if (snapshot != null) {
                     val notes = snapshot.toObjects(Notes::class.java)
                     noteAdapter.submitList(notes)
+
+                    if (notes.isEmpty()) {
+                        notesRecyclerView.visibility = View.GONE
+                        emptyNotesMessage.visibility = View.VISIBLE
+                    } else {
+                        notesRecyclerView.visibility = View.VISIBLE
+                        emptyNotesMessage.visibility = View.GONE
+                    }
                 }
             }
     }
@@ -163,6 +178,14 @@ class HomeFragment : BaseAuthFragment() {
                 if (snapshot != null) {
                     val books = snapshot.toObjects(Books::class.java)
                     bookAdapter.submitList(books)
+
+                    if (books.isEmpty()) {
+                        booksRecyclerView.visibility = View.GONE
+                        emptyBooksMessage.visibility = View.VISIBLE
+                    } else {
+                        booksRecyclerView.visibility = View.VISIBLE
+                        emptyBooksMessage.visibility = View.GONE
+                    }
                 }
             }
     }
@@ -267,21 +290,22 @@ class HomeFragment : BaseAuthFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             LOCATION_PERMISSION_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // Permission was granted, get the location
-                    googleMap?.isMyLocationEnabled = true
-                    getCurrentLocation()
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                        ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                        googleMap?.isMyLocationEnabled = true
+                        getCurrentLocation()
+                    }
                 } else {
-                    // Permission denied, handle the failure scenario
-                    // You might want to show a message to the user explaining why the location is needed
+                    Toast.makeText(requireContext(), "Location permission is required for this feature", Toast.LENGTH_LONG).show()
                 }
-                return
             }
             else -> {
-                // Ignore all other requests
             }
         }
     }
+
 
     companion object {
         private const val TAG = "HomeFragment"
