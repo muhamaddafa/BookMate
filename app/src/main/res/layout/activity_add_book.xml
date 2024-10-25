@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="85dp"
-                android:src="@drawable/image_placeholder"
+                android:src="@drawable/solar_gallery_broken"
                 android:contentDescription="Book Image"
                 android:layout_gravity="center" />
 
@@ -92,7 +92,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:background="@drawable/rounded_form_twotone"
-                android:textSize="12sp"
+                android:textSize="20sp"
                 android:hint="Input Title"
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -120,7 +120,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:background="@drawable/rounded_form_twotone"
-                android:textSize="12sp"
+                android:textSize="20sp"
                 android:hint="Input Author"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -148,7 +148,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:background="@drawable/rounded_form_twotone"
-                android:textSize="12sp"
+                android:textSize="20sp"
                 android:hint="Input Publisher"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -176,7 +176,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:background="@drawable/rounded_form_twotone"
-                android:textSize="12sp"
+                android:textSize="20sp"
                 android:hint="Input Total Pages"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -234,10 +234,9 @@
             android:id="@+id/bookDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="13dp"
-            android:paddingTop="10dp"
-            android:textSize="12sp"
-            android:hint="Description"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:hint="Write a description..."
             android:background="@drawable/rounded_form_twotone"
             android:gravity="start"
             android:minLines="5"

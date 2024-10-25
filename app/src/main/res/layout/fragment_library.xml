@@ -13,6 +13,7 @@
 
         <!-- Bagian Header -->
         <LinearLayout
+            android:id="@+id/LibraryLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -22,15 +23,15 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="My Library"
-                android:textColor="@color/Lochmara_500"
+                android:textColor="@color/Lochmara_600"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textSize="30sp" />
@@ -99,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:padding="10dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -121,6 +122,8 @@
                         android:layout_height="0dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/border_2px"
+                        android:padding="40dp"
+                        android:src="@drawable/solar_gallery_broken"
                         app:layout_constraintWidth_percent="0.3"
                         app:layout_constraintDimensionRatio="2:3"
                         app:layout_constraintStart_toStartOf="parent"
@@ -197,6 +200,8 @@
                         android:layout_height="0dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/border_2px"
+                        android:padding="40dp"
+                        android:src="@drawable/solar_gallery_broken"
                         app:layout_constraintWidth_percent="0.3"
                         app:layout_constraintDimensionRatio="2:3"
                         app:layout_constraintStart_toStartOf="parent"
@@ -273,6 +278,8 @@
                         android:layout_height="0dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/border_2px"
+                        android:padding="40dp"
+                        android:src="@drawable/solar_gallery_broken"
                         app:layout_constraintWidth_percent="0.3"
                         app:layout_constraintDimensionRatio="2:3"
                         app:layout_constraintStart_toStartOf="parent"

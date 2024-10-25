@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_margin="16dp">
+        android:padding="15dp">
 
         <!-- Header -->
         <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Edit Book"
-                android:textColor="@android:color/holo_blue_dark"
+                android:textColor="@color/Lochmara_500"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal" />
@@ -52,12 +52,13 @@
         <!-- Book Cover -->
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
 
             <ImageView
-                android:layout_width="116dp"
-                android:layout_height="155dp"
-                android:background="@drawable/border_4px"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:background="@drawable/image_border"
                 android:contentDescription="Book Cover"
                 android:scaleType="centerCrop" />
 
@@ -95,7 +96,7 @@
             android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -110,7 +111,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
-                android:background="@drawable/border_2px"
+                android:background="@drawable/rounded_form_twotone"
                 android:text="Naruto 05"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -121,7 +122,7 @@
             android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -136,7 +137,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
-                android:background="@drawable/border_2px"
+                android:background="@drawable/rounded_form_twotone"
                 android:text="Pandu Uzumaki"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +148,7 @@
             android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -162,7 +163,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
-                android:background="@drawable/border_2px"
+                android:background="@drawable/rounded_form_twotone"
                 android:text="PPP Podcast"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -173,7 +174,7 @@
             android:textColor="@color/Black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -188,7 +189,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
-                android:background="@drawable/border_2px"
+                android:background="@drawable/rounded_form_twotone"
                 android:text="150"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -200,33 +201,36 @@
             android:text="What type of book do you read?"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/cardview_dark_background"
-            android:layout_marginTop="16dp"
-            android:gravity="start" />
+            android:textColor="@color/Black"
+            android:gravity="start"
+            android:layout_marginBottom="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="left"
-            android:layout_marginTop="8dp">
+            android:layout_marginBottom="10dp">
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/paperBook"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/gradient_color"
                 android:text="Paper Book"
-                android:backgroundTint="@android:color/holo_blue_light"
-                android:background="@drawable/rounded_button"
-                android:textColor="@android:color/white" />
+                android:textSize="15sp"
+                android:textColor="@android:color/white"
+                android:layout_marginRight="5dp"/>
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/eBook"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/gradient_color"
                 android:text="E-book"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@android:color/holo_blue_light"
-                android:background="@drawable/rounded_button"
-                android:textColor="@android:color/white" />
+                android:textSize="15sp"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
 
         <!-- Description -->
@@ -237,7 +241,6 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/cardview_dark_background"
-            android:layout_marginTop="16dp"
             android:gravity="start" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -252,9 +255,9 @@
                 android:layout_height="150dp"
                 android:text="Write a description..."
                 android:textAlignment="textStart"
-                android:background="@drawable/border_2px"
+                android:background="@drawable/rounded_form_twotone"
                 android:gravity="top|start"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -262,12 +265,11 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Book"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:backgroundTint="@android:color/holo_blue_dark"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/gradient_color"
+            android:text="SAVE BOOK"
             android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginTop="20dp" />
     </LinearLayout>
 </ScrollView>
