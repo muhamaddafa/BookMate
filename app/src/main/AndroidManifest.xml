@@ -20,6 +20,14 @@
             android:name=".BookScreenActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".EditBookActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AddNotesActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAbvM4QNppHbjLwPKmCb9kbgKCAh7ysJLE" />

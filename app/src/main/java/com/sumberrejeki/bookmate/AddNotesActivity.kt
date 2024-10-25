@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,6 +48,11 @@ class AddNotesActivity : AppCompatActivity() {
             val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
             dateTextView.text = currentDate
             timeTextView.text = currentTime
+        }
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
     }
 }

@@ -25,13 +25,13 @@
             android:gravity="center_vertical|start"
             android:layout_marginBottom="8dp">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/arrow_back"
-                android:contentDescription="Back Icon"
-                app:tint="@android:color/holo_blue_dark" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:elevation="40dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:navigationIcon="@drawable/arrow_back" />
 
             <TextView
                 android:layout_width="0dp"

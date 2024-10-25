@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sumberrejeki.bookmate.models.Books
 
-class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
+class BookAdapter(private val onItemClick: (Books) -> Unit) : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
 
     private val bookList = mutableListOf<Books>()
 
@@ -18,6 +18,15 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
         val titleTextView: TextView = itemView.findViewById(R.id.bookTitleTextView)
         val authorTextView: TextView = itemView.findViewById(R.id.bookAuthorTextView)
         val pageCountTextView: TextView = itemView.findViewById(R.id.pageCountTextView)
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick(bookList[position])
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {

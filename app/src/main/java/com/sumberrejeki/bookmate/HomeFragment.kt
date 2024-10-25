@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -82,7 +83,9 @@ class HomeFragment : BaseAuthFragment() {
 
         // Initialize RecyclerView and its adapter
         booksRecyclerView = view.findViewById(R.id.booksRecyclerView)
-        bookAdapter = BookAdapter()
+        bookAdapter = BookAdapter { book ->
+            navigateToBookDetail(book)
+        }
         booksRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         booksRecyclerView.adapter = bookAdapter
 
@@ -162,6 +165,14 @@ class HomeFragment : BaseAuthFragment() {
                     bookAdapter.submitList(books)
                 }
             }
+    }
+
+    private fun navigateToBookDetail(book: Books) {
+        // Create an Intent to start the BookDetailActivity
+        val intent = Intent(requireContext(), BookScreenActivity::class.java)
+        intent.putExtra("BOOK_TITLE", book.title)
+        // Add any other data you want to pass
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

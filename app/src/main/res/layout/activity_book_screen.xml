@@ -21,13 +21,13 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="16dp">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/arrow_back"
-                android:contentDescription="Back Icon"
-                app:tint="@android:color/holo_blue_dark" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:elevation="40dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:navigationIcon="@drawable/arrow_back" />
 
             <View
                 android:layout_width="0dp"
@@ -35,6 +35,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/editBookButton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/rounded_background"
@@ -113,6 +114,7 @@
                     android:padding="6dp" />
 
                 <Button
+                    android:id="@+id/addNoteButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Add new note"
