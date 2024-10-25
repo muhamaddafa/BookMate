@@ -75,7 +75,7 @@
 
                 <!-- Recent Notes Card -->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/notesRecyclerView"
+                    android:id="@+id/recentNotesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_library" />
 
     <fragment
+        android:id="@+id/navigation_notes"
+        android:name="com.sumberrejeki.bookmate.NotesFragment"
+        android:label="fragment_notes"
+        tools:layout="@layout/fragment_notes" />
+
+    <fragment
         android:id="@+id/navigation_profile"
         android:name="com.sumberrejeki.bookmate.ProfileFragment"
         android:label="fragment_profile"
