@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingBottom="16dp">
+            android:layout_marginBottom="16dp">
 
             <ImageView
                 android:layout_width="48dp"
@@ -35,10 +35,11 @@
                 android:layout_weight="1" />
 
             <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@drawable/rounded_background"
                 android:src="@drawable/uil_edit"
+                android:padding="5dp"
                 android:scaleType="centerInside"
                 android:contentDescription="Edit Icon" />
         </LinearLayout>
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Naruto 05"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@color/Lochmara_500"
             android:textSize="32sp"
             android:textStyle="bold"
             android:gravity="start"
@@ -80,6 +81,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="Pandu Uzumaki"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
@@ -96,7 +98,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:background="@drawable/rounded_background"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="10dp"
                     android:padding="6dp" />
 
                 <TextView
@@ -107,7 +109,7 @@
                     android:background="@drawable/rounded_background"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="10dp"
                     android:padding="6dp" />
 
                 <Button
@@ -119,11 +121,7 @@
                     android:background="@drawable/rounded_background"
                     android:drawableLeft="@drawable/add_newnote"
                     android:drawablePadding="2dp"
-                    android:layout_marginTop="4dp"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
+                    android:padding="6dp"
                     android:gravity="center_vertical"/>
             </LinearLayout>
         </LinearLayout>
@@ -134,9 +132,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="Description"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingTop="16dp" />
+            android:textColor="@color/Black"
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -144,7 +143,8 @@
             android:background="@drawable/border_2px"
             android:hint="Book Description in Here..."
             android:gravity="top|start"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:layout_marginBottom="10dp"/>
 
         <!-- Notes Section -->
         <TextView
@@ -153,12 +153,12 @@
             android:text="NOTE"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingTop="14dp"
-            android:paddingBottom="8dp" />
+            android:textColor="@color/Black"
+            android:layout_marginBottom="8dp" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/black" />
+            android:background="@color/Black" />
         <!-- Grid Section -->
         <GridLayout
             android:layout_width="match_parent"
@@ -190,6 +190,7 @@
                         android:text="10/10/1001"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
+                        android:textStyle="bold"
                         android:layout_marginBottom="4dp" />
 
                     <TextView
@@ -226,6 +227,7 @@
                         android:text="10/10/1001"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
+                        android:textStyle="bold"
                         android:layout_marginBottom="4dp" />
 
                     <TextView

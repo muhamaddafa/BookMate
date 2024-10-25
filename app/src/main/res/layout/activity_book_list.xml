@@ -35,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Book List"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="32sp"
+                android:textColor="@color/Lochmara_500"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal" />
             <ImageView
@@ -50,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:padding="8dp"
-            android:layout_marginBottom="32dp"
+            android:padding="15dp"
+            android:layout_marginBottom="30dp"
             android:alignmentMode="alignMargins">
 
             <!-- Book Items -->
