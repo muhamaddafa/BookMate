@@ -46,6 +46,22 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.loginButton)
         linkSignup = findViewById(R.id.signupLink)
 
+        email.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                email.hint = "" // Hilangkan hint
+            } else {
+                email.hint = "Input Email" // Kembalikan hint
+            }
+        }
+
+        password.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                password.hint = "" // Hilangkan hint
+            } else {
+                password.hint = "Input Password" // Kembalikan hint
+            }
+        }
+
         if (auth.currentUser != null) {
             // Pengguna sudah login, langsung pindah ke MainActivity
             startActivity(Intent(this, MainActivity::class.java))

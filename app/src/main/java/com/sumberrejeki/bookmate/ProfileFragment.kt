@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -29,6 +30,38 @@ class ProfileFragment : BaseAuthFragment() {
         fetchUserData()
         view.findViewById<Button>(R.id.logoutButton).setOnClickListener {
             logoutUser()
+        }
+
+        setHintBehavior(view.findViewById(R.id.usernameInput))
+        setHintBehavior(view.findViewById(R.id.firstNameInput))
+        setHintBehavior(view.findViewById(R.id.lastNameInput))
+        setHintBehavior(view.findViewById(R.id.emailInput))
+        setHintBehavior(view.findViewById(R.id.addressInput))
+        setHintBehavior(view.findViewById(R.id.cityInput))
+        setHintBehavior(view.findViewById(R.id.stateInput))
+        setHintBehavior(view.findViewById(R.id.zipCodeInput))
+        setHintBehavior(view.findViewById(R.id.countryInput))
+    }
+
+    private fun setHintBehavior(editText: EditText) {
+        editText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                editText.hint = "" // Hilangkan hint saat EditText difokuskan
+            } else if (editText.text.toString().isEmpty()) {
+                // Kembalikan hint jika EditText tidak ada isinya
+                editText.hint = when (editText.id) {
+                    R.id.usernameInput -> "Input Username"
+                    R.id.firstNameInput -> "Input First Name"
+                    R.id.lastNameInput -> "Input Last Name"
+                    R.id.emailInput -> "Input Email"
+                    R.id.addressInput -> "Input Address"
+                    R.id.cityInput -> "Input City"
+                    R.id.stateInput -> "Input State"
+                    R.id.zipCodeInput -> "Input Zip Code"
+                    R.id.countryInput -> "Enter Country"
+                    else -> ""
+                }
+            }
         }
     }
 

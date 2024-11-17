@@ -29,6 +29,14 @@ class ForgotpasswordActivity : AppCompatActivity() {
         resetButton = findViewById(R.id.resetButton)
         auth = FirebaseAuth.getInstance()
 
+        emailInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                emailInput.hint = "" // Hilangkan hint
+            } else {
+                emailInput.hint = "Input Email" // Kembalikan hint
+            }
+        }
+
         resetButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
 
