@@ -53,7 +53,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/usernameInput"
@@ -63,7 +64,6 @@
                         android:drawableEnd="@drawable/edit_text"
                         android:paddingEnd="10dp"
                         android:hint="@string/input_username"
-                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -82,7 +82,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/firstNameInput"
@@ -92,7 +93,6 @@
                         android:drawableEnd="@drawable/edit_text"
                         android:paddingEnd="10dp"
                         android:hint="@string/input_first_name"
-                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -111,7 +111,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/lastNameInput"
@@ -121,7 +122,6 @@
                         android:paddingEnd="10dp"
                         android:drawableEnd="@drawable/edit_text"
                         android:hint="@string/input_last_name"
-                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -140,7 +140,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/emailInput"
@@ -150,7 +151,6 @@
                         android:drawableEnd="@drawable/edit_text"
                         android:paddingEnd="10dp"
                         android:hint="@string/email_input"
-                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -169,7 +169,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/addressInput"
@@ -179,7 +180,6 @@
                         android:drawableEnd="@drawable/edit_text"
                         android:paddingEnd="10dp"
                         android:hint="@string/address_input"
-                        android:textColorHint="@color/hint_colour"
                         android:inputType="textEmailAddress"
                         android:paddingStart="13dp"
                         android:textSize="12sp" />
@@ -213,7 +213,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginRight="10dp"
-                            app:boxBackgroundMode="outline">
+                            app:boxBackgroundMode="outline"
+                            app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/cityInput"
@@ -223,7 +224,6 @@
                                 android:drawableEnd="@drawable/edit_text"
                                 android:paddingEnd="10dp"
                                 android:hint="@string/input_city"
-                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
@@ -251,7 +251,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginLeft="10dp"
-                            app:boxBackgroundMode="outline">
+                            app:boxBackgroundMode="outline"
+                            app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/stateInput"
@@ -261,7 +262,6 @@
                                 android:drawableEnd="@drawable/edit_text"
                                 android:paddingEnd="10dp"
                                 android:hint="@string/input_state"
-                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
@@ -289,7 +289,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginRight="10dp"
-                            app:boxBackgroundMode="outline">
+                            app:boxBackgroundMode="outline"
+                            app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/zipCodeInput"
@@ -299,7 +300,6 @@
                                 android:drawableEnd="@drawable/edit_text"
                                 android:paddingEnd="10dp"
                                 android:hint="@string/input_zipCode"
-                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />
@@ -329,7 +329,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginLeft="10dp"
-                            app:boxBackgroundMode="outline">
+                            app:boxBackgroundMode="outline"
+                            app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/countryInput"
@@ -339,7 +340,6 @@
                                 android:drawableEnd="@drawable/edit_text"
                                 android:paddingEnd="10dp"
                                 android:hint="@string/input_country"
-                                android:textColorHint="@color/hint_colour"
                                 android:inputType="text"
                                 android:paddingStart="13dp"
                                 android:textSize="12sp" />

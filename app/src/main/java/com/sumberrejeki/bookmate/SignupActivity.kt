@@ -61,6 +61,12 @@ class SignupActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        setHintBehavior(username)
+        setHintBehavior(firstName)
+        setHintBehavior(lastName)
+        setHintBehavior(email)
+        setHintBehavior(password)
+
         setupClickListeners()
     }
 
@@ -75,6 +81,24 @@ class SignupActivity : AppCompatActivity() {
 
         linkLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+        }
+    }
+
+    private fun setHintBehavior(editText: EditText) {
+        editText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                editText.hint = "" // Hilangkan hint saat EditText difokuskan
+            } else if (editText.text.toString().isEmpty()) {
+                // Kembalikan hint jika EditText tidak ada isinya
+                editText.hint = when (editText.id) {
+                    R.id.usernameInput -> "Enter Username"
+                    R.id.firstNameInput -> "Enter First Name"
+                    R.id.lastNameInput -> "Enter Last Name"
+                    R.id.emailInput -> "Enter Email"
+                    R.id.passwordInput -> "Enter Password"
+                    else -> ""
+                }
+            }
         }
     }
 
