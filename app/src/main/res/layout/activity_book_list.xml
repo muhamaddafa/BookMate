@@ -56,6 +56,7 @@
 
             <!-- Book Items -->
             <LinearLayout
+                android:id="@+id/book1"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -74,6 +75,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/book2"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -91,6 +93,7 @@
                     android:scaleType="fitCenter" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/book3"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -108,6 +111,7 @@
                     android:scaleType="fitCenter" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/book4"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -125,6 +129,7 @@
                     android:scaleType="fitCenter" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/book5"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -142,6 +147,7 @@
                     android:scaleType="fitCenter" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/book6"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -159,6 +165,7 @@
                     android:scaleType="fitCenter" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/book7"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
@@ -176,6 +183,7 @@
                     android:scaleType="fitCenter" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/book8"
                 android:layout_width="0dp"
                 android:layout_height="200sp"
                 android:layout_columnWeight="1"
