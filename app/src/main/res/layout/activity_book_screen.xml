@@ -34,7 +34,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/editBookButton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -47,10 +47,11 @@
 
         <!-- Book Cover and Info -->
         <TextView
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Naruto 05"
+            android:text="Book Title"
             android:textColor="@color/Lochmara_500"
             android:textSize="32sp"
             android:textStyle="bold"
@@ -64,13 +65,34 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <ImageView
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_height="180dp"
+                android:layout_height="240dp"
                 android:layout_weight="0.4"
-                android:background="@drawable/border_4px"
-                android:contentDescription="Book Cover"
-                android:scaleType="centerCrop" />
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Border View -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_4px" />
+
+                    <!-- ImageView for Book Cover -->
+                    <ImageView
+                        android:id="@+id/bookImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Book Cover"
+                        android:scaleType="centerCrop"
+                        app:cornerRadius="8dp"
+                        android:padding="4dp"/>
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -80,10 +102,11 @@
                 android:paddingStart="16dp">
 
                 <TextView
+                    android:id="@+id/authorTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="Pandu Uzumaki"
+                    android:text="Author Name"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -92,9 +115,10 @@
                     android:padding="6dp" />
 
                 <TextView
+                    android:id="@+id/publisherTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PPP Publisher"
+                    android:text="Publisher Name"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -103,9 +127,10 @@
                     android:padding="6dp" />
 
                 <TextView
+                    android:id="@+id/totalPagesTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="150"
+                    android:text="Total Pages"
                     android:textStyle="bold"
                     android:background="@drawable/rounded_background"
                     android:textColor="@android:color/white"
@@ -128,6 +153,7 @@
             </LinearLayout>
         </LinearLayout>
 
+
         <!-- Description -->
         <TextView
             android:layout_width="match_parent"
@@ -140,6 +166,7 @@
             android:layout_marginTop="16dp" />
 
         <TextView
+            android:id="@+id/descriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:background="@drawable/border_2px"
