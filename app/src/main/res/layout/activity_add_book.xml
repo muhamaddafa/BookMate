@@ -62,7 +62,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end|bottom"
-                android:layout_marginTop="51dp"
+                android:layout_marginTop="50dp"
                 android:padding="5dp"
                 android:background="@drawable/rounded_edit_text"
                 android:contentDescription="Camera"
