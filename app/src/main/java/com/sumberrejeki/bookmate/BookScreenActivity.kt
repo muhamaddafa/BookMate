@@ -32,7 +32,10 @@ class BookScreenActivity : AppCompatActivity() {
         // Initialize buttons
         editBookButton = findViewById(R.id.editBookButton)
         editBookButton.setOnClickListener {
-            startActivity(Intent(this, EditBookActivity::class.java))
+            val title = intent.getStringExtra("BOOK_TITLE") ?: "No Title"
+            val intent = Intent(this, EditBookActivity::class.java)
+            intent.putExtra("BOOK_TITLE", title)
+            startActivity(intent)
         }
 
         addNoteButton = findViewById(R.id.addNoteButton)

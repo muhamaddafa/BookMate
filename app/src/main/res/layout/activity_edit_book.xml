@@ -50,43 +50,64 @@
         </LinearLayout>
 
         <!-- Book Cover -->
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:id="@+id/imageFrame"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/image_border"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:elevation="8dp">
 
+<!--            <View-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="85dp"-->
+<!--                android:background="@drawable/solar_gallery_broken"-->
+<!--                android:contentDescription="Placeholder" />-->
+
+            <!-- ImageView for Book Cover -->
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:background="@drawable/image_border"
-                android:contentDescription="Book Cover"
-                android:scaleType="centerCrop" />
+                android:id="@+id/bookImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Book Image"
+                android:scaleType="centerCrop"
+                android:padding="6dp"
+                android:layout_gravity="center" />
 
-            <ImageButton
+            <!-- Camera Button for Image -->
+            <ImageView
+                android:id="@+id/cameraButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/bxs_camera"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="50dp"
+                android:padding="5dp"
                 android:background="@drawable/rounded_edit_text"
-                android:contentDescription="Change Cover"
-                android:layout_marginTop="-20dp"
-                android:layout_gravity="end|bottom" />
-        </FrameLayout>
-<!--        <ImageView-->
-<!--            android:layout_width="116dp"-->
-<!--            android:layout_height="155dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:background="@drawable/border_4px"-->
-<!--            android:contentDescription="Book Cover"-->
-<!--            android:scaleType="centerCrop" />-->
+                android:contentDescription="Camera"
+                android:src="@drawable/camera_icon" />
+        </LinearLayout>
 
-<!--        <ImageButton-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:src="@drawable/bxs_camera"-->
-<!--            android:background="@drawable/rounded_edit_text"-->
-<!--            android:contentDescription="Change Cover"-->
-<!--            android:layout_marginTop="-40dp"-->
-<!--            android:layout_gravity="" />-->
+
+        <!--        <ImageView-->
+        <!--            android:layout_width="116dp"-->
+        <!--            android:layout_height="155dp"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:background="@drawable/border_4px"-->
+        <!--            android:contentDescription="Book Cover"-->
+        <!--            android:scaleType="centerCrop" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:layout_width="40dp"-->
+        <!--            android:layout_height="40dp"-->
+        <!--            android:src="@drawable/bxs_camera"-->
+        <!--            android:background="@drawable/rounded_edit_text"-->
+        <!--            android:contentDescription="Change Cover"-->
+        <!--            android:layout_marginTop="-40dp"-->
+        <!--            android:layout_gravity="" />-->
 
         <!-- Input Fields using TextInputLayout and TextInputEditText -->
         <TextView
@@ -107,12 +128,13 @@
             app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
                 android:background="@drawable/rounded_form_twotone"
-                android:text="Naruto 05"
+                android:hint="Input Title"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
@@ -133,12 +155,13 @@
             app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
                 android:background="@drawable/rounded_form_twotone"
-                android:text="Pandu Uzumaki"
+                android:hint="Input Author"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
@@ -159,12 +182,13 @@
             app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookPublisher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
                 android:background="@drawable/rounded_form_twotone"
-                android:text="PPP Podcast"
+                android:hint="Input Publisher"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
@@ -185,12 +209,13 @@
             app:boxStrokeColor="@color/Lochmara_400">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookPages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="13dp"
                 android:textSize="20sp"
                 android:background="@drawable/rounded_form_twotone"
-                android:text="150"
+                android:hint="Input Total Pages"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -251,9 +276,10 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookDescription"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:text="Write a description..."
+                android:hint="Write a description..."
                 android:textAlignment="textStart"
                 android:background="@drawable/rounded_form_twotone"
                 android:gravity="top|start"
@@ -263,6 +289,7 @@
 
         <!-- Save Button -->
         <Button
+            android:id="@+id/saveBookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gradient_color"
