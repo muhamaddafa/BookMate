@@ -120,7 +120,7 @@ class AddShelvesActivity : AppCompatActivity() {
             "title" to title,
             "description" to description,
             "imageUrl" to imageUrl,
-            "userID" to userId,
+            "userId" to userId,
             "timestamp" to System.currentTimeMillis()
         )
 
