@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
@@ -19,6 +20,7 @@ class AddShelvesActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
+    private lateinit var auth: FirebaseAuth
     private var selectedImageUri: Uri? = null
     private lateinit var shelvesImage: ImageView
     private val PICK_IMAGE_REQUEST = 1
@@ -27,9 +29,10 @@ class AddShelvesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_shelves)
 
-        // Initialize Firestore and Firebase Storage
+        // Initialize Firebase services
         firestore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         // Set up views
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -105,15 +108,24 @@ class AddShelvesActivity : AppCompatActivity() {
 
     // Tambah rak ke Firestore
     private fun addShelfToFirestore(title: String, description: String, imageUrl: String) {
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val userId = currentUser.uid
+
         val shelfData = hashMapOf(
             "title" to title,
             "description" to description,
             "imageUrl" to imageUrl,
+            "userID" to userId,
             "timestamp" to System.currentTimeMillis()
         )
 
-        firestore.collection("shelves")
-            .add(shelfData)
+        firestore.collection("shelves").document(title)
+            .set(shelfData)
             .addOnSuccessListener {
                 Toast.makeText(this, "Shelf added successfully!", Toast.LENGTH_SHORT).show()
                 finish()
