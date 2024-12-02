@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.play.services.location)
     implementation(libs.places)
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:common:16.0.0")
 
 
     testImplementation(libs.junit)
