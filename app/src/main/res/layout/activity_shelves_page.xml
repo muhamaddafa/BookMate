@@ -55,6 +55,7 @@
             android:layout_marginBottom="20dp">
 
             <EditText
+                android:id="@+id/shelf_title_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Shelve Title"
@@ -71,7 +72,27 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/solar_gallery_broken"
                 app:tint="@color/Lochmara_500"
-                android:layout_marginBottom="60dp"/>
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Description"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="@color/Black"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/shelf_description_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/border_2px"
+                android:gravity="top|start"
+                android:padding="12dp"
+                android:layout_marginBottom="10dp"/>
 
         </LinearLayout>
 
@@ -121,7 +142,6 @@
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:padding="15dp"
-            android:layout_marginBottom="30dp"
             android:alignmentMode="alignMargins">
 
             <!-- Book Items -->
@@ -231,5 +251,53 @@
 
             <!-- Add more items here as needed -->
         </GridLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:alignmentMode="alignMargins"
+            android:gravity="center"
+            android:rowCount="2"
+            android:columnOrderPreserved="false">
+            <Button
+                android:id="@+id/delete_shelves_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/gradient_color"
+                android:text="Delete Shelves"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                />
+            <Button
+                android:id="@+id/save_shelves_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/gradient_color"
+                android:text="Delete book"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                />
+            <Button
+                android:id="@+id/third_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/gradient_color"
+                android:text="Third Button"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+        </GridLayout>
+
     </LinearLayout>
 </ScrollView>
