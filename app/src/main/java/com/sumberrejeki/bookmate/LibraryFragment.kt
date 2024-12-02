@@ -2,52 +2,81 @@ package com.sumberrejeki.bookmate
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.sumberrejeki.bookmate.models.Shelf
 
 class LibraryFragment : Fragment() {
 
-    private lateinit var bookListButton : Button
-    private lateinit var addShelvesButton : Button
-    private lateinit var editShelvesButton : Button
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var shelvesAdapter: ShelvesAdapter
+    private val shelvesList = mutableListOf<Shelf>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_library, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bookListButton = view.findViewById(R.id.bookListButton)
-        addShelvesButton = view.findViewById(R.id.newShelvesButton)
-        editShelvesButton = view.findViewById(R.id.editButton1)
+        // Initialize Firestore and FirebaseAuth
+        firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
-        bookListButton.setOnClickListener {
-            val intent = Intent(activity, BookListActivity::class.java)
+        // Initialize RecyclerView
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        shelvesAdapter = ShelvesAdapter(shelvesList)
+        recyclerView.adapter = shelvesAdapter
+
+        // Button untuk berpindah ke AddShelvesActivity
+        val newShelvesButton: View = view.findViewById(R.id.newShelvesButton)
+        newShelvesButton.setOnClickListener {
+            val intent = Intent(requireContext(), AddShelvesActivity::class.java)
             startActivity(intent)
         }
 
-        addShelvesButton.setOnClickListener {
-            val intent = Intent(activity, AddShelvesActivity::class.java)
-            startActivity(intent)
-        }
-
-        editShelvesButton.setOnClickListener {
-            val intent = Intent(activity, ShelvesPageActivity::class.java)
-            startActivity(intent)
+        // Fetch data from Firestore
+        auth.currentUser?.let { user ->
+            fetchShelvesData(user.uid)
         }
     }
 
+    private fun fetchShelvesData(userId: String) {
+        firestore.collection("shelves")
+            .whereEqualTo("userId", userId) // Hanya ambil data dengan userId sesuai
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                shelvesList.clear()
+                for (document in querySnapshot) {
+                    val shelf = Shelf(
+                        id = document.id,
+                        imageUrl = document.getString("imageUrl") ?: "",
+                        title = document.getString("title") ?: "",
+                        description = document.getString("description") ?: "",
+                        userId = document.getString("userId") ?: "" // Pastikan userId diisi
+                    )
+                    shelvesList.add(shelf)
+                }
+                if (shelvesList.isEmpty()) {
+                    Toast.makeText(requireContext(), "No shelves available", Toast.LENGTH_SHORT).show()
+                }
+                shelvesAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Failed to fetch shelves: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 }
