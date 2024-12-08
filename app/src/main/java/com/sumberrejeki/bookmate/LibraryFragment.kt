@@ -57,26 +57,30 @@ class LibraryFragment : Fragment() {
     private fun fetchShelvesData(userId: String) {
         firestore.collection("shelves")
             .whereEqualTo("userId", userId) // Hanya ambil data dengan userId sesuai
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                shelvesList.clear()
-                for (document in querySnapshot) {
-                    val shelf = Shelf(
-                        id = document.id,
-                        imageUrl = document.getString("imageUrl") ?: "",
-                        title = document.getString("title") ?: "",
-                        description = document.getString("description") ?: "",
-                        userId = document.getString("userId") ?: "" // Pastikan userId diisi
-                    )
-                    shelvesList.add(shelf)
+            .addSnapshotListener { querySnapshot, exception ->
+                if (exception != null) {
+                    Toast.makeText(requireContext(), "Failed to fetch shelves: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
                 }
-                if (shelvesList.isEmpty()) {
-                    Toast.makeText(requireContext(), "No shelves available", Toast.LENGTH_SHORT).show()
+
+                if (querySnapshot != null) {
+                    shelvesList.clear()
+                    for (document in querySnapshot) {
+                        val shelf = Shelf(
+                            id = document.id,
+                            imageUrl = document.getString("imageUrl") ?: "",
+                            title = document.getString("title") ?: "",
+                            description = document.getString("description") ?: "",
+                            userId = document.getString("userId") ?: "" // Pastikan userId diisi
+                        )
+                        shelvesList.add(shelf)
+                    }
+                    if (shelvesList.isEmpty()) {
+                        Toast.makeText(requireContext(), "No shelves available", Toast.LENGTH_SHORT).show()
+                    }
+                    shelvesAdapter.notifyDataSetChanged()
                 }
-                shelvesAdapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "Failed to fetch shelves: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 }
