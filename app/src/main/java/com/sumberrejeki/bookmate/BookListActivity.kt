@@ -2,32 +2,67 @@ package com.sumberrejeki.bookmate
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.sumberrejeki.bookmate.models.Books
 
 class BookListActivity : AppCompatActivity() {
 
-    private lateinit var bookButton: LinearLayout
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var bookAdapter: BookAdapter
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_book_list)
 
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        recyclerView = findViewById(R.id.recyclerViewBooks)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        // Set up RecyclerView with GridLayoutManager
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columns
+        bookAdapter = BookAdapter { book ->
+            navigateToBookDetail(book)
+        }
+        recyclerView.adapter = bookAdapter
+
+        // Initialize toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 
-        bookButton = findViewById(R.id.book1)
-        bookButton.setOnClickListener {
-            val intent = Intent(this, BookScreenActivity::class.java)
-            startActivity(intent)
-        }
+        fetchBooks(auth.currentUser?.uid ?: "")
+    }
+
+    private fun fetchBooks(userId: String) {
+        db.collection("books")
+            .whereEqualTo("userId", userId) // Filter books by user ID
+            .get()
+            .addOnSuccessListener { documents ->
+                val bookList = documents.map { document ->
+                    document.toObject(Books::class.java)
+                }
+                bookAdapter.submitList(bookList)
+            }
+            .addOnFailureListener { exception ->
+                // Handle the error
+            }
+    }
+
+    private fun navigateToBookDetail(book: Books) {
+        // Create an Intent to start the BookDetailActivity
+        val intent = Intent(this, BookScreenActivity::class.java)
+        intent.putExtra("BOOK_TITLE", book.title)
+        // Add any other data you want to pass
+        startActivity(intent)
     }
 }
