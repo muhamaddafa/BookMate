@@ -5,9 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -23,6 +25,7 @@ class AddShelvesActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var selectedImageUri: Uri? = null
     private lateinit var shelvesImage: ImageView
+    private lateinit var progressBar: ProgressBar
     private val PICK_IMAGE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +43,7 @@ class AddShelvesActivity : AppCompatActivity() {
         val addDescriptionLabel = findViewById<EditText>(R.id.add_description_label)
         val addShelvesButton = findViewById<Button>(R.id.add_shelves)
         shelvesImage = findViewById(R.id.add_shelves_image)
+        progressBar = findViewById(R.id.progressBar)
 
         // Toolbar navigation
         toolbar.setNavigationOnClickListener {
@@ -92,6 +96,9 @@ class AddShelvesActivity : AppCompatActivity() {
             return
         }
 
+        // Tampilkan ProgressBar
+        progressBar.visibility = View.VISIBLE
+
         val storageRef = storage.reference.child("shelves_images/${UUID.randomUUID()}.jpg")
 
         storageRef.putFile(selectedImageUri!!)
@@ -102,6 +109,7 @@ class AddShelvesActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { e ->
+                progressBar.visibility = View.GONE // Sembunyikan ProgressBar saat gagal
                 Toast.makeText(this, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
@@ -110,6 +118,7 @@ class AddShelvesActivity : AppCompatActivity() {
     private fun addShelfToFirestore(title: String, description: String, imageUrl: String) {
         val currentUser = auth.currentUser
         if (currentUser == null) {
+            progressBar.visibility = View.GONE // Sembunyikan ProgressBar jika user tidak login
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
@@ -127,10 +136,12 @@ class AddShelvesActivity : AppCompatActivity() {
         firestore.collection("shelves").document(title)
             .set(shelfData)
             .addOnSuccessListener {
+                progressBar.visibility = View.GONE // Sembunyikan ProgressBar saat sukses
                 Toast.makeText(this, "Shelf added successfully!", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener { e ->
+                progressBar.visibility = View.GONE // Sembunyikan ProgressBar saat gagal
                 Toast.makeText(this, "Failed to add shelf: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
