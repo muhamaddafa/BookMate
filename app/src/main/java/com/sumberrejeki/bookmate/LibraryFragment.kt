@@ -41,6 +41,13 @@ class LibraryFragment : Fragment() {
         shelvesAdapter = ShelvesAdapter(shelvesList)
         recyclerView.adapter = shelvesAdapter
 
+        // Button BookList
+        val bookListButton: View = view.findViewById(R.id.bookListButton)
+        bookListButton.setOnClickListener {
+            val intent = Intent(requireContext(), BookListActivity::class.java)
+            startActivity(intent)
+        }
+
         // Button untuk berpindah ke AddShelvesActivity
         val newShelvesButton: View = view.findViewById(R.id.newShelvesButton)
         newShelvesButton.setOnClickListener {

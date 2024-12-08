@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="24sp"
+        android:layout_marginTop="16sp"
         android:textColor="@color/Lochmara_600"
         android:textAllCaps="true"
         android:maxLines="1"
@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="4sp"
+        android:layout_marginBottom="20sp"
         android:textColor="@color/Black"
         android:textSize="14sp" />
 
