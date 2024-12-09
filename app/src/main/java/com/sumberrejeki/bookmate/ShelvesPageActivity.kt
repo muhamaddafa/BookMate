@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,7 +18,7 @@ class ShelvesPageActivity : AppCompatActivity() {
     private lateinit var deleteShelvesButton: Button
     private lateinit var saveShelvesButton: Button
     private lateinit var titleEditText: EditText
-    private lateinit var descriptionEditText: EditText
+    private lateinit var descriptionEditText: TextView
 
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
@@ -80,7 +81,7 @@ class ShelvesPageActivity : AppCompatActivity() {
 
                         // Menampilkan title dan description di EditText
                         titleEditText.setText(title)
-                        descriptionEditText.setText(description)
+                        descriptionEditText.text = description
                     }
                 }
                 .addOnFailureListener { e ->

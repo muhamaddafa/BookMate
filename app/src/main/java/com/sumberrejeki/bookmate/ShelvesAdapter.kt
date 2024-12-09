@@ -1,9 +1,11 @@
 package com.sumberrejeki.bookmate
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,6 +17,7 @@ class ShelvesAdapter(private val shelvesList: List<Shelf>) : RecyclerView.Adapte
         val imageView: ImageView = itemView.findViewById(R.id.bookImageView1)
         val descriptionView: TextView = itemView.findViewById(R.id.bookDescriptionTextView1)
         val bookTitleTextView: TextView = itemView.findViewById(R.id.bookTitleTextView1)
+        val editButtonLayout: LinearLayout = itemView.findViewById(R.id.editButtonLayout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShelfViewHolder {
@@ -33,7 +36,15 @@ class ShelvesAdapter(private val shelvesList: List<Shelf>) : RecyclerView.Adapte
         // Set data
         holder.bookTitleTextView.text = shelf.title
         holder.descriptionView.text = shelf.description
+
+        // Set click listener for editButtonLayout
+        holder.editButtonLayout.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, ShelvesPageActivity::class.java)
+            context.startActivity(intent)
+        }
     }
+
 
     override fun getItemCount(): Int {
         return shelvesList.size

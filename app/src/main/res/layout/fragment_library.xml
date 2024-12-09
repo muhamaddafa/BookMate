@@ -9,6 +9,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp">
 
@@ -32,25 +37,21 @@
                 android:textColor="@color/Lochmara_600"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
-                android:textSize="30sp" />
+                android:textSize="24sp" />
         </LinearLayout>
 
-        <!-- Bagian Pencarian -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:padding="10sp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/border_2px"
-            android:gravity="center_vertical"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp">
+            android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="24sp"
+                android:layout_height="24sp"
                 android:src="@drawable/baseline_search_24"
-                android:layout_marginStart="11.91dp"
-                android:layout_marginEnd="8dp"
                 app:tint="@color/Lochmara_500" />
 
             <EditText
@@ -59,7 +60,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="Search"
-                android:padding="8dp"
+                android:layout_marginStart="10sp"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/Lochmara_500"
                 android:textSize="16sp"
@@ -92,6 +93,8 @@
             android:textSize="15sp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp" />
+
+        </LinearLayout>
 
         <!-- RecyclerView untuk menampilkan daftar rak -->
         <androidx.recyclerview.widget.RecyclerView
