@@ -13,11 +13,12 @@ import com.sumberrejeki.bookmate.models.Notes
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteAdapter(private val isHomeFragment: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NoteAdapter(private val isHomeFragment: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_RECENT = 0
         private const val VIEW_TYPE_MY = 1
+        private const val VIEW_TYPE_BOOK = 2
     }
 
     private val noteList = mutableListOf<Notes>()
@@ -34,6 +35,11 @@ class NoteAdapter(private val isHomeFragment: Boolean) : RecyclerView.Adapter<Re
         val bookImage: ImageView = itemView.findViewById(R.id.bookImage)
     }
 
+    inner class BookNoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val date: TextView = itemView.findViewById(R.id.createdDate)
+        val noteContent: TextView = itemView.findViewById(R.id.notesContentTextView)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_RECENT -> {
@@ -45,6 +51,11 @@ class NoteAdapter(private val isHomeFragment: Boolean) : RecyclerView.Adapter<Re
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.my_item_note, parent, false)
                 MyNoteViewHolder(view)
+            }
+            VIEW_TYPE_BOOK -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.cardview_notes, parent, false)
+                BookNoteViewHolder(view)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -62,6 +73,10 @@ class NoteAdapter(private val isHomeFragment: Boolean) : RecyclerView.Adapter<Re
                 holder.date.text = formatDate(note.created)
                 fetchBookDetails(note.bookId, holder)
             }
+            is BookNoteViewHolder -> {
+                holder.noteContent.text = note.text
+                holder.date.text = formatDate(note.created)
+            }
         }
     }
 
@@ -74,7 +89,13 @@ class NoteAdapter(private val isHomeFragment: Boolean) : RecyclerView.Adapter<Re
     override fun getItemCount() = noteList.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (isHomeFragment) VIEW_TYPE_RECENT else VIEW_TYPE_MY
+        if (isHomeFragment == "recent") {
+            return VIEW_TYPE_RECENT
+        } else if (isHomeFragment == "my") {
+            return VIEW_TYPE_MY
+        } else {
+            return VIEW_TYPE_BOOK
+        }
     }
 
     private fun fetchBookDetails(bookId: String, holder: MyNoteViewHolder) {

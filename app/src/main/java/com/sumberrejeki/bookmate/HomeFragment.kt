@@ -94,7 +94,7 @@ class HomeFragment : BaseAuthFragment() {
         booksRecyclerView.adapter = bookAdapter
 
         notesRecyclerView = view.findViewById(R.id.recentNotesRecyclerView)
-        noteAdapter = NoteAdapter(isHomeFragment = true)
+        noteAdapter = NoteAdapter(isHomeFragment = "recent")
         notesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         notesRecyclerView.adapter = noteAdapter
 
