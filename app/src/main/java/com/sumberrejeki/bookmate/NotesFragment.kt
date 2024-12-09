@@ -31,7 +31,7 @@ class NotesFragment : BaseAuthFragment() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        noteAdapter = NoteAdapter(isHomeFragment = false)
+        noteAdapter = NoteAdapter(isHomeFragment = "my")
         view.findViewById<RecyclerView>(R.id.myNotesRecyclerView).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = noteAdapter

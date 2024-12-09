@@ -2,13 +2,16 @@ package com.sumberrejeki.bookmate
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sumberrejeki.bookmate.models.Shelf
@@ -59,8 +62,37 @@ class LibraryFragment : Fragment() {
         auth.currentUser?.let { user ->
             fetchShelvesData(user.uid)
         }
+
+        // Fetch user data
+        fetchUserData()
     }
 
+    private fun fetchUserData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val userId = it.uid
+            val db = FirebaseFirestore.getInstance()
+            val docRef = db.collection("users").document(userId)
+            docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    val photoUrl = document.getString("photoUrl") // Tambahkan ini
+
+                    // Memuat gambar menggunakan Glide
+                    val imageView = view?.findViewById<ImageView>(R.id.avatarImageView)
+                    imageView?.let {
+                        Glide.with(this)
+                            .load(photoUrl)
+                            .circleCrop()
+                            .placeholder(R.drawable.image_placeholder) // Gambar placeholder saat loading
+                            .error(R.drawable.image_placeholder) // Gambar error jika gagal memuat
+                            .into(it) // 'it' merujuk pada imageView yang non-null
+                    }
+                }
+            }.addOnFailureListener { exception ->
+                Log.d("LibraryFragment", "get failed with ", exception)
+            }
+        }
+    }
     private fun fetchShelvesData(userId: String) {
         firestore.collection("shelves")
             .whereEqualTo("userId", userId) // Hanya ambil data dengan userId sesuai
