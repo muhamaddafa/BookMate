@@ -1,6 +1,7 @@
 package com.sumberrejeki.bookmate.models
 
 data class Books(
+    var id: String? = null,
     var title: String? = null,
     var author: String? = null,
     var publisher: String? = null,

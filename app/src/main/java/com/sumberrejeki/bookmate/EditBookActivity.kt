@@ -39,7 +39,7 @@ class EditBookActivity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
 
         // Fetch existing book data
-        fetchBooks()
+        fetchBookData()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -61,48 +61,45 @@ class EditBookActivity : AppCompatActivity() {
     }
 
     // Fetch existing book data using the book ID
-    private fun fetchBooks() {
-        val user = auth.currentUser
-        user?.let {
-            val userId = it.uid
-            val title = intent.getStringExtra("BOOK_TITLE") ?: "No Title"
-            val docRef = db.collection("books").whereEqualTo("title", title)
+    private fun fetchBookData() {
+        // Retrieve the book ID from the intent
+        bookId = intent.getStringExtra("BOOK_ID") // Ensure you are getting the correct ID
 
-            docRef.get().addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    for (document in documents) {
-                        val title = document.getString("title") ?: "No Title"
-                        val author = document.getString("author") ?: "Unknown Author"
-                        val publisher = document.getString("publisher") ?: "Unknown Publisher"
-                        val pages = document.getLong("pages") ?: 0
-                        val description = document.getString("description") ?: "No Description"
-                        val imageUrl = document.getString("imageUrl")
-                        bookId = document.id
+        bookId?.let { id ->
+            val docRef = db.collection("books").document(id) // Use document() to get the specific book
 
-                        // Populate the fields with existing data
-                        findViewById<EditText>(R.id.bookTitle).setText(title)
-                        findViewById<EditText>(R.id.bookAuthor).setText(author)
-                        findViewById<EditText>(R.id.bookPublisher).setText(publisher)
-                        findViewById<EditText>(R.id.bookPages).setText(pages.toString())
-                        findViewById<EditText>(R.id.bookDescription).setText(description)
+            docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    val title = document.getString("title") ?: "No Title"
+                    val author = document.getString("author") ?: "Unknown Author"
+                    val publisher = document.getString("publisher") ?: "Unknown Publisher"
+                    val pages = document.getLong("pages") ?: 0
+                    val description = document.getString("description") ?: "No Description"
+                    val imageUrl = document.getString("imageUrl")
 
-                        // Load existing image using Glide
-                        imageUrl?.let { url ->
-                            Glide.with(this)
-                                .load(url)
-                                .placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder)
-                                .into(bookImage)
-                        }
+                    // Populate the fields with existing data
+                    findViewById<EditText>(R.id.bookTitle).setText(title)
+                    findViewById<EditText>(R.id.bookAuthor).setText(author)
+                    findViewById<EditText>(R.id.bookPublisher).setText(publisher)
+                    findViewById<EditText>(R.id.bookPages).setText(pages.toString())
+                    findViewById<EditText>(R.id.bookDescription).setText(description)
+
+                    // Load existing image using Glide
+                    imageUrl?.let { url ->
+                        Glide.with(this)
+                            .load(url)
+                            .placeholder(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder)
+                            .into(bookImage)
                     }
                 } else {
-                    Log.d("EditBookActivity", "No books found for this user")
+                    Log.d("EditBookActivity", "No book found with ID: $id")
                 }
             }.addOnFailureListener { exception ->
-                Log.d("EditBookActivity", "Failed to fetch books: ", exception)
+                Log.d("EditBookActivity", "Failed to fetch book: ", exception)
             }
         } ?: run {
-            Log.d("EditBookActivity", "User not found")
+            Log.d("EditBookActivity", "Book ID is null")
         }
     }
 
@@ -133,15 +130,23 @@ class EditBookActivity : AppCompatActivity() {
         val description = findViewById<EditText>(R.id.bookDescription).text.toString()
 
         // Create a book object
-        val book = Books(title, author, publisher, pages, description, userId)
+        val book = Books(bookId, title, author, publisher, pages, description, userId)
 
         // Update the book document in Firestore
         bookId?.let {
+            Log.d("EditBookActivity", "Updating book with ID: $it")
+            Log.d("EditBookActivity", "Book data: $book")
             db.collection("books").document(it)
                 .set(book)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Book Updated!", Toast.LENGTH_SHORT).show()
-                    finish()  // Go back to BookScreenActivity
+                    // Create an Intent to start the BookDetailActivity
+                    val intent = Intent(this, BookScreenActivity::class.java)
+                    intent.putExtra("BOOK_TITLE", book.title)
+                    // book id
+                    intent.putExtra("BOOK_ID", book.id)
+                    // Add any other data you want to pass
+                    startActivity(intent)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Failed to Update Book: ${e.message}", Toast.LENGTH_SHORT).show()

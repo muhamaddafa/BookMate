@@ -49,7 +49,8 @@ class BookScreenActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
-            onBackPressed()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
         db = FirebaseFirestore.getInstance()
@@ -57,9 +58,9 @@ class BookScreenActivity : AppCompatActivity() {
         // Initialize buttons
         editBookButton = findViewById(R.id.editBookButton)
         editBookButton.setOnClickListener {
-            val id = intent.getStringExtra("BOOK_TITLE") ?: "No Title"
             val intent = Intent(this, EditBookActivity::class.java)
-            intent.putExtra("BOOK_TITLE", title)
+            intent.putExtra("BOOK_ID", bookId)
+            Log.d("EditBookActivity", "Starting EditBookActivity with book ID: $bookId")
             startActivity(intent)
         }
 
@@ -141,7 +142,6 @@ class BookScreenActivity : AppCompatActivity() {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 val recognizedText = visionText.text
-                val title = intent.getStringExtra("BOOK_TITLE") ?: "No Title"
                 val intent = Intent(this, AddNotesActivity::class.java)
                 intent.putExtra("OCR_TEXT", recognizedText)
                 intent.putExtra("BOOK_ID", bookId)
@@ -179,13 +179,15 @@ class BookScreenActivity : AppCompatActivity() {
         user?.let {
             val userId = it.uid
             val db = FirebaseFirestore.getInstance()
-            val title = intent.getStringExtra("BOOK_TITLE") ?: "No Title"
-            val docRef = db.collection("books").whereEqualTo("title", title)
 
-            docRef.get().addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    for (document in documents) {
-                        bookId = document.id
+            // Retrieve the bookId from the Intent
+            val bookId = intent.getStringExtra("BOOK_ID") // Correctly retrieve the book ID
+            if (bookId != null) {
+                val docRef = db.collection("books").document(bookId) // Use bookId directly
+
+                docRef.get().addOnSuccessListener { document ->
+                    if (document.exists()) { // Check if the document exists
+                        Log.d("MD", document.id)
                         val title = document.getString("title") ?: "No Title"
                         val author = document.getString("author") ?: "Unknown Author"
                         val publisher = document.getString("publisher") ?: "Unknown Publisher"
@@ -209,16 +211,20 @@ class BookScreenActivity : AppCompatActivity() {
                                 .error(R.drawable.image_placeholder)
                                 .into(imageView)
                         }
+
+                        // Call the callback with the bookId
+                        onBookIdFetched(bookId)
+                    } else {
+                        Log.d("BookScreenActivity", "No book found for user: $userId")
+                        onBookIdFetched(null) // No book found
                     }
-                    // Call the callback with the bookId
-                    onBookIdFetched(bookId)
-                } else {
-                    Log.d("BookScreenActivity", "No books found for user: $userId")
-                    onBookIdFetched(null) // No book found
+                }.addOnFailureListener { exception ->
+                    Log.e("BookScreenActivity", "Error getting document: ", exception)
+                    onBookIdFetched(null) // Error occurred
                 }
-            }.addOnFailureListener { exception ->
-                Log.e("BookScreenActivity", "Error getting documents: ", exception)
-                onBookIdFetched(null) // Error occurred
+            } else {
+                Log.w("BookScreenActivity", "No book ID provided.")
+                onBookIdFetched(null) // No book ID provided
             }
         } ?: run {
             Log.w("BookScreenActivity", "User is not logged in.")

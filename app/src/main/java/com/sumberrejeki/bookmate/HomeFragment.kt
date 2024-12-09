@@ -53,6 +53,8 @@ class HomeFragment : BaseAuthFragment() {
     private lateinit var emptyBooksMessage: TextView
     private lateinit var emptyNotesMessage: TextView
 
+    private var bookId: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -176,7 +178,13 @@ class HomeFragment : BaseAuthFragment() {
                 }
 
                 if (snapshot != null) {
-                    val books = snapshot.toObjects(Books::class.java)
+                    val books = snapshot.documents.map { document ->
+                        // Create a Books object and set the document ID as the book ID
+                        val book = document.toObject(Books::class.java)
+                        book?.apply { id = document.id }
+                        Log.d("MD", "bookId: $bookId")
+                        book
+                    }.filterNotNull()
                     bookAdapter.submitList(books)
 
                     if (books.isEmpty()) {
@@ -194,6 +202,8 @@ class HomeFragment : BaseAuthFragment() {
         // Create an Intent to start the BookDetailActivity
         val intent = Intent(requireContext(), BookScreenActivity::class.java)
         intent.putExtra("BOOK_TITLE", book.title)
+        // book id
+        intent.putExtra("BOOK_ID", book.id)
         // Add any other data you want to pass
         startActivity(intent)
     }

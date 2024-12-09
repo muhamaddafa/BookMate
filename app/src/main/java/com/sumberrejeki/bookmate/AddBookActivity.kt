@@ -93,27 +93,30 @@ class AddBookActivity : AppCompatActivity() {
     private fun addBookToFirestore(imageUrl: String?) {
         val userId = auth.currentUser?.uid ?: return
 
-        // Ambil data dari form
+        // Get data from the form
         val title = findViewById<EditText>(R.id.bookTitle).text.toString()
         val author = findViewById<EditText>(R.id.bookAuthor).text.toString()
         val publisher = findViewById<EditText>(R.id.bookPublisher).text.toString()
         val pages = findViewById<EditText>(R.id.bookPages).text.toString().toIntOrNull() ?: 0
         val description = findViewById<EditText>(R.id.bookDescription).text.toString()
 
-        // Buat objek buku dengan User ID dan URL gambar
-        val book = Books(title, author, publisher, pages, description, userId).apply {
-            this.imageUrl = imageUrl // Menambahkan URL gambar ke dalam model Book
+        // Generate a new document ID
+        val newBookRef = db.collection("books").document() // This generates a new document reference with a unique ID
+        val id = newBookRef.id // Get the generated document ID
+
+        // Create a book object with User ID and image URL
+        val book = Books(id, title, author, publisher, pages, description, userId).apply {
+            this.imageUrl = imageUrl // Add the image URL to the Book model
         }
 
-        // Simpan buku ke Firestore
-        db.collection("books")
-            .add(book)
+        // Save the book to Firestore
+        newBookRef.set(book) // Use set() to save the book object to the generated document reference
             .addOnSuccessListener {
-                Toast.makeText(this, "Buku berhasil ditambahkan!", Toast.LENGTH_SHORT).show()
-                finish()  // Kembali ke MainActivity setelah berhasil menambahkan buku
+                Toast.makeText(this, "Book added successfully!", Toast.LENGTH_SHORT).show()
+                finish()  // Go back to MainActivity after successfully adding the book
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Gagal menambahkan buku: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to add book: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
