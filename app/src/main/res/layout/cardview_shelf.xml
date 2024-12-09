@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="5dp"
     app:cardElevation="8dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,20 +37,23 @@
                 android:text="Title"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/bookDescriptionTextView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
 
             <LinearLayout
                 android:id="@+id/editButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="14dp"
                 android:padding="8dp"
                 android:background="@drawable/border_2px"
                 android:layout_gravity="bottom|end"

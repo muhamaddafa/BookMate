@@ -37,6 +37,14 @@ class ShelvesAdapter(private val shelvesList: List<Shelf>) : RecyclerView.Adapte
         holder.bookTitleTextView.text = shelf.title
         holder.descriptionView.text = shelf.description
 
+        // Set click listener for the entire CardView
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, ShelvesActivity::class.java)
+            intent.putExtra("shelfId", shelf.id) // Pass additional data if needed
+            context.startActivity(intent)
+        }
+
         // Set click listener for editButtonLayout
         holder.editButtonLayout.setOnClickListener {
             val context = holder.itemView.context

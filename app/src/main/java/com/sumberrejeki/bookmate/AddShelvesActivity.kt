@@ -82,7 +82,11 @@ class AddShelvesActivity : AppCompatActivity() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageUri = data.data
             if (selectedImageUri != null) {
-                shelvesImage.setImageURI(selectedImageUri)  // Menampilkan gambar di ImageView
+                // Menampilkan gambar di ImageView
+                shelvesImage.setImageURI(selectedImageUri)
+
+                // Mengubah scaleType menjadi fitCenter setelah gambar diunggah
+                shelvesImage.scaleType = ImageView.ScaleType.CENTER_CROP
             } else {
                 Toast.makeText(this, "Failed to select image", Toast.LENGTH_SHORT).show()
             }
