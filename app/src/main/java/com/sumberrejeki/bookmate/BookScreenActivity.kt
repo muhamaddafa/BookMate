@@ -196,7 +196,7 @@ class BookScreenActivity : AppCompatActivity() {
                         val desc = document.getString("description") ?: "No Description"
 
                         // Update UI with book data
-                        findViewById<TextView>(R.id.titleTextView)?.text = title
+                        findViewById<TextView>(R.id.titleTextView)?.text = title.uppercase()
                         findViewById<TextView>(R.id.authorTextView)?.text = author
                         findViewById<TextView>(R.id.publisherTextView)?.text = publisher
                         findViewById<TextView>(R.id.totalPagesTextView)?.text = totalPages.toString()

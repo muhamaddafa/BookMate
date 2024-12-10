@@ -76,9 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:textColor="@color/Lochmara_500"
-                            android:text="@string/viewAll"
-                            android:textSize="16sp" />
+                            android:textColor="@color/Lochmara_500" />
 
                 </LinearLayout>
 
