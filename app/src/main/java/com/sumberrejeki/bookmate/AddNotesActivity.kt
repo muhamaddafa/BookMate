@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
@@ -75,6 +76,17 @@ class AddNotesActivity : AppCompatActivity() {
     }
 
     private fun saveNote() {
+        // Get the text from the EditText
+        val noteText = notesDescriptionEditText.text.toString().trim()
+
+        // Check if the note text is empty
+        if (noteText.isEmpty()) {
+            // Show a message to the user
+            Toast.makeText(this, "Please enter a note before saving.", Toast.LENGTH_SHORT).show()
+            return // Exit the function early
+        }
+
+        // If not empty, proceed to save the note
         dateTimeContainer.visibility = LinearLayout.VISIBLE
         dateTextView.text = currentDate
         timeTextView.text = currentTime
@@ -90,6 +102,7 @@ class AddNotesActivity : AppCompatActivity() {
                 Log.d("Edit", "Gagal Input Notes: ${e.message}")
             }
     }
+
 
     private fun createNote(): Notes {
         val bookId = intent.getStringExtra("BOOK_ID") ?: ""

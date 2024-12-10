@@ -54,15 +54,14 @@ class BookListActivity : AppCompatActivity() {
                 bookAdapter.submitList(bookList)
             }
             .addOnFailureListener { exception ->
-                // Handle the error
+                // Handle any errors
             }
     }
 
     private fun navigateToBookDetail(book: Books) {
-        // Create an Intent to start the BookDetailActivity
         val intent = Intent(this, BookScreenActivity::class.java)
         intent.putExtra("BOOK_TITLE", book.title)
-        // Add any other data you want to pass
+        intent.putExtra("BOOK_ID", book.id)
         startActivity(intent)
     }
 }

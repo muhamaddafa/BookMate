@@ -28,6 +28,7 @@ class EditBookActivity : AppCompatActivity() {
     private lateinit var bookImage: ImageView
     private val PICK_IMAGE_REQUEST = 1
     private var bookId: String? = null // To hold the ID of the book being edited
+    private var existingImageUrl: String? = null // To hold the existing image URL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,10 @@ class EditBookActivity : AppCompatActivity() {
         }
 
         bookImage = findViewById(R.id.bookImage)
+
+        bookImage.setOnClickListener {
+            selectImage()
+        }
 
         val cameraButton = findViewById<ImageView>(R.id.cameraButton)
         cameraButton.setOnClickListener {
@@ -75,7 +80,7 @@ class EditBookActivity : AppCompatActivity() {
                     val publisher = document.getString("publisher") ?: "Unknown Publisher"
                     val pages = document.getLong("pages") ?: 0
                     val description = document.getString("description") ?: "No Description"
-                    val imageUrl = document.getString("imageUrl")
+                    existingImageUrl = document.getString("imageUrl") // Store existing image URL
 
                     // Populate the fields with existing data
                     findViewById<EditText>(R.id.bookTitle).setText(title)
@@ -85,7 +90,7 @@ class EditBookActivity : AppCompatActivity() {
                     findViewById<EditText>(R.id.bookDescription).setText(description)
 
                     // Load existing image using Glide
-                    imageUrl?.let { url ->
+                    existingImageUrl?.let { url ->
                         Glide.with(this)
                             .load(url)
                             .placeholder(R.drawable.image_placeholder)
@@ -132,7 +137,42 @@ class EditBookActivity : AppCompatActivity() {
         // Create a book object
         val book = Books(bookId, title, author, publisher, pages, description, userId)
 
-        // Update the book document in Firestore
+        // Check if a new image has been selected
+        if (::selectedImageUri.isInitialized) {
+            // Upload the new image and get the URL
+            uploadImageAndGetUrl(selectedImageUri) { imageUrl ->
+                // Update the book document in Firestore with the new image URL
+                updateFirestoreWithBook(book.copy(imageUrl = imageUrl))
+            }
+        } else {
+            // Use the existing image URL if no new image is selected
+            updateFirestoreWithBook(book.copy(imageUrl = existingImageUrl))
+        }
+    }
+
+    // Function to upload the image and return the URL
+    private fun uploadImageAndGetUrl(imageUri: Uri, callback: (String?) -> Unit) {
+        val fileName = UUID.randomUUID().toString() + ".jpg"
+        val storageRef = storage.reference.child("book_images/$fileName")
+
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                // Get the download URL
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    callback(uri.toString()) // Return the URL via callback
+                }.addOnFailureListener { e ->
+                    Log.e("EditBookActivity", "Failed to get download URL: ${e.message}")
+                    callback(null) // Return null if failed
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("EditBookActivity", "Failed to upload image: ${e.message}")
+                callback(null) // Return null if failed
+            }
+    }
+
+    // Function to update Firestore with the book data
+    private fun updateFirestoreWithBook(book: Books) {
         bookId?.let {
             Log.d("EditBookActivity", "Updating book with ID: $it")
             Log.d("EditBookActivity", "Book data: $book")
@@ -154,3 +194,4 @@ class EditBookActivity : AppCompatActivity() {
         }
     }
 }
+
