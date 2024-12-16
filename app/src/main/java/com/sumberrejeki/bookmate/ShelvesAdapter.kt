@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sumberrejeki.bookmate.models.Shelf
 
-class ShelvesAdapter(private val shelvesList: List<Shelf>) : RecyclerView.Adapter<ShelvesAdapter.ShelfViewHolder>() {
+class ShelvesAdapter(private var shelvesList: List<Shelf>) : RecyclerView.Adapter<ShelvesAdapter.ShelfViewHolder>() {
 
     class ShelfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.bookImageView1)
@@ -56,5 +56,10 @@ class ShelvesAdapter(private val shelvesList: List<Shelf>) : RecyclerView.Adapte
 
     override fun getItemCount(): Int {
         return shelvesList.size
+    }
+
+    fun updateList(newList: List<Shelf>) {
+        shelvesList = newList
+        notifyDataSetChanged()
     }
 }
