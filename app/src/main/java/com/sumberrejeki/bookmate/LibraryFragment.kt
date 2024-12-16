@@ -2,10 +2,15 @@ package com.sumberrejeki.bookmate
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,6 +28,9 @@ class LibraryFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var shelvesAdapter: ShelvesAdapter
     private val shelvesList = mutableListOf<Shelf>()
+
+    private val handler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +51,27 @@ class LibraryFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         shelvesAdapter = ShelvesAdapter(shelvesList)
         recyclerView.adapter = shelvesAdapter
+
+        val searchEditText : EditText = view.findViewById(R.id.searchLibrary)
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchRunnable?.let { handler.removeCallbacks(it) }
+
+                searchRunnable = Runnable {
+                    filterShelves(s.toString())
+                }
+
+                handler.postDelayed(searchRunnable!!, 1500)
+            }
+        })
 
         // Button BookList
         val bookListButton: View = view.findViewById(R.id.bookListButton)
@@ -120,6 +149,14 @@ class LibraryFragment : Fragment() {
                     shelvesAdapter.notifyDataSetChanged()
                 }
             }
+    }
+
+    private fun filterShelves(query: String) {
+        val filteredList = shelvesList.filter { shelf ->
+            (shelf.title?.contains(query, ignoreCase = true) == true) ||
+                    (shelf.description?.contains(query, ignoreCase = true) == true)
+        }
+        shelvesAdapter.updateList(filteredList)
     }
 
 }

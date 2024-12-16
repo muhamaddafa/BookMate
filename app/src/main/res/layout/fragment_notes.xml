@@ -49,6 +49,7 @@
                 app:tint="@color/Lochmara_500" />
 
             <EditText
+                android:id="@+id/searchNotes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
