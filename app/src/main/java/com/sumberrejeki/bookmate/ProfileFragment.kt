@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
@@ -17,6 +19,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileFragment : BaseAuthFragment() {
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+    private lateinit var changePasswordLink: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,8 +34,14 @@ class ProfileFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fetchUserData()
+        view.findViewById<TextView>(R.id.changePasswordLink).setOnClickListener {
+            startActivity(Intent(activity, ForgotpasswordActivity::class.java))
+        }
         view.findViewById<Button>(R.id.logoutButton).setOnClickListener {
             logoutUser()
+        }
+        view.findViewById<Button>(R.id.saveButton).setOnClickListener {
+            updateUserData()
         }
 
         setHintBehavior(view.findViewById(R.id.usernameInput))
@@ -62,6 +74,34 @@ class ProfileFragment : BaseAuthFragment() {
                     else -> ""
                 }
             }
+        }
+    }
+
+    private fun updateUserData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val userId = it.uid
+            val userData = hashMapOf(
+                "displayName" to view?.findViewById<TextInputEditText>(R.id.usernameInput)?.text.toString(),
+                "firstName" to view?.findViewById<TextInputEditText>(R.id.firstNameInput)?.text.toString(),
+                "lastName" to view?.findViewById<TextInputEditText>(R.id.lastNameInput)?.text.toString(),
+                "email" to view?.findViewById<TextInputEditText>(R.id.emailInput)?.text.toString(),
+                "address" to view?.findViewById<TextInputEditText>(R.id.addressInput)?.text.toString(),
+                "city" to view?.findViewById<TextInputEditText>(R.id.cityInput)?.text.toString(),
+                "state" to view?.findViewById<TextInputEditText>(R.id.stateInput)?.text.toString(),
+                "zipCode" to view?.findViewById<TextInputEditText>(R.id.zipCodeInput)?.text.toString(),
+                "country" to view?.findViewById<TextInputEditText>(R.id.countryInput)?.text.toString()
+            )
+
+            val db = FirebaseFirestore.getInstance()
+            db.collection("users").document(userId)
+                .set(userData)
+                .addOnSuccessListener {
+                    Toast.makeText(activity, "Data updated successfully", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(activity, "Error updating data: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
