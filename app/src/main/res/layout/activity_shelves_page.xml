@@ -55,7 +55,7 @@
             android:layout_marginBottom="20dp">
 
             <EditText
-                android:id="@+id/shelf_title_edit_text"
+                android:id="@+id/shelf_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Shelve Title"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="8dp" />
 
             <TextView
-                android:id="@+id/shelf_description_edit_text"
+                android:id="@+id/shelf_description"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:background="@drawable/border_2px"
@@ -137,199 +137,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Book Grid Section -->
-        <GridLayout
-            android:id="@+id/grid_layout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewBooks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:padding="15dp"
-            android:alignmentMode="alignMargins">
+            android:layout_marginBottom="30dp"
+            android:padding="15dp" />
 
-            <!-- Book Items -->
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="200sp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_2px">
-
-                <!-- CheckBox di pojok kanan atas -->
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    />
-
-                <!-- Konten utama LinearLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="Book Image"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/solar_gallery_broken" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="200sp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_2px">
-
-                <!-- CheckBox di pojok kanan atas -->
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    />
-
-                <!-- Konten utama LinearLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="Book Image"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/solar_gallery_broken" />
-                </LinearLayout>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="200sp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_2px">
-
-                <!-- CheckBox di pojok kanan atas -->
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    />
-
-                <!-- Konten utama LinearLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="Book Image"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/solar_gallery_broken" />
-                </LinearLayout>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="200sp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_2px">
-
-                <!-- CheckBox di pojok kanan atas -->
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    />
-
-                <!-- Konten utama LinearLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="Book Image"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/solar_gallery_broken" />
-                </LinearLayout>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="200sp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_2px">
-
-                <!-- CheckBox di pojok kanan atas -->
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    />
-
-                <!-- Konten utama LinearLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="Book Image"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/solar_gallery_broken" />
-                </LinearLayout>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="200sp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_2px">
-
-                <!-- CheckBox di pojok kanan atas -->
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    />
-
-                <!-- Konten utama LinearLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="Book Image"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/solar_gallery_broken" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <!-- Add more items here as needed -->
-        </GridLayout>
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

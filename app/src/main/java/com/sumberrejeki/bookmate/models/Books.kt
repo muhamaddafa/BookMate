@@ -1,5 +1,7 @@
 package com.sumberrejeki.bookmate.models
 
+import java.io.Serializable
+
 data class Books(
     var id: String? = null,
     var title: String? = null,
@@ -9,4 +11,4 @@ data class Books(
     var description: String? = null,
     var userId: String? = null,
     var imageUrl: String? = null
-)
+) : Serializable

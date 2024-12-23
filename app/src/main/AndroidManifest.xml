@@ -40,6 +40,10 @@
         <activity
             android:name=".ShelvesPageActivity"
             android:exported="false" />
+
+        <activity android:name=".BookListShelves"
+            android:exported="false"/>
+
         <activity
             android:name=".BookListActivity"
             android:exported="false" />
