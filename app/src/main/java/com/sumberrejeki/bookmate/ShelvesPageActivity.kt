@@ -2,73 +2,77 @@ package com.sumberrejeki.bookmate
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.GridLayout
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.sumberrejeki.bookmate.models.Books
 import androidx.appcompat.widget.Toolbar
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.auth.FirebaseAuth
 
 class ShelvesPageActivity : AppCompatActivity() {
 
-    // Daftar untuk menyimpan FrameLayout yang memiliki CheckBox yang tercentang
-    private val selectedBooks = mutableListOf<FrameLayout>()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var bookAdapter: BookAdapterWithCheckBox
+    private var displayBooks: ArrayList<Books> = arrayListOf()  // List buku yang ditampilkan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shelves_page)
 
-        // Ambil referensi ke GridLayout
-        val gridLayout: GridLayout = findViewById(R.id.grid_layout)
+        val addBookButton: Button = findViewById(R.id.add_book_button)
+        addBookButton.setOnClickListener {
+            val intent = Intent(this, BookListShelves::class.java)
+            startActivity(intent)
+        }
 
-        // Ambil referensi ke tombol "Delete Book"
-        val deleteButton: View = findViewById(R.id.delete_button)  // Pastikan Anda memiliki tombol dengan ID delete_button
+        // Terima data dari Intent
+        val selectedBooks = intent.getSerializableExtra("SELECTED_BOOKS") as? ArrayList<Books> ?: arrayListOf()
+        displayBooks.addAll(selectedBooks)  // Tampilkan semua buku yang dipilih
 
-        // Iterasi setiap child di GridLayout dan tambahkan listener pada CheckBox
-        for (i in 0 until gridLayout.childCount) {
-            val itemView = gridLayout.getChildAt(i) as FrameLayout // Setiap item adalah FrameLayout
+        recyclerView = findViewById(R.id.recyclerViewBooks)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-            // Cari CheckBox di dalam FrameLayout
-            val checkBox = itemView.getChildAt(0) as CheckBox
-
-            // Jika CheckBox belum memiliki ID, berikan ID unik
-            if (checkBox.id == View.NO_ID) {
-                val uniqueId = View.generateViewId()
-                checkBox.id = uniqueId
-            }
-
-            // Set listener untuk CheckBox
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
+        // Inisialisasi Adapter
+        bookAdapter = BookAdapterWithCheckBox(
+            onItemClick = { book ->
+                Toast.makeText(this, "Clicked: ${book.title}", Toast.LENGTH_SHORT).show()
+            },
+            onCheckedChange = { book, isChecked ->  // Tambahkan parameter onCheckedChange
                 if (isChecked) {
-                    // Tambahkan item ke dalam daftar jika CheckBox dicentang
-                    selectedBooks.add(itemView)
+                    Toast.makeText(this, "${book.title} selected", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Hapus item dari daftar jika CheckBox tidak dicentang
-                    selectedBooks.remove(itemView)
+                    Toast.makeText(this, "${book.title} unselected", Toast.LENGTH_SHORT).show()
                 }
             }
+        )
+        recyclerView.adapter = bookAdapter
+        bookAdapter.submitList(displayBooks)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
 
-        // Set listener untuk tombol Delete Book
+        val deleteButton: Button = findViewById(R.id.delete_button)
         deleteButton.setOnClickListener {
-            // Hapus item yang tercentang
-            if (selectedBooks.isNotEmpty()) {
-                for (itemView in selectedBooks) {
-                    gridLayout.removeView(itemView)
-                }
-                // Clear daftar setelah menghapus item
-                selectedBooks.clear()
-                Toast.makeText(this, "Books deleted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "No books selected for deletion", Toast.LENGTH_SHORT).show()
-            }
+            deleteSelectedBooks()
         }
+    }
+
+    private fun deleteSelectedBooks() {
+        val selectedBooks = bookAdapter.getSelectedBooks()  // Ambil buku yang dicentang dari adapter
+        if (selectedBooks.isEmpty()) {
+            Toast.makeText(this, "No books selected for deletion", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Hapus hanya buku yang dicentang dari displayBooks
+        displayBooks.removeAll { book -> selectedBooks.contains(book) }
+
+        // Update RecyclerView
+        bookAdapter.submitList(displayBooks)
+        Toast.makeText(this, "Selected books deleted", Toast.LENGTH_SHORT).show()
     }
 }
