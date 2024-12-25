@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <EditText
                 android:id="@+id/shelf_title"
@@ -64,15 +64,46 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="10dp" />
 
-            <ImageView
+            <LinearLayout
+                android:id="@+id/imageFrame"
                 android:layout_width="150dp"
                 android:layout_height="200dp"
-                android:background="@drawable/border_2px"
-                android:padding="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/solar_gallery_broken"
-                app:tint="@color/Lochmara_500"
-                android:layout_marginBottom="20dp"/>
+                android:orientation="vertical"
+                android:background="@drawable/image_border"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:elevation="8dp">
+
+                <!-- Placeholder for Image -->
+                <ImageView
+                    android:id="@+id/shelves_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="85dp"
+                    android:src="@drawable/solar_gallery_broken"
+                    android:contentDescription="Book Image"
+                    android:layout_gravity="center" />
+
+                <!-- Camera Button for Image -->
+                <ImageView
+                    android:id="@+id/cameraButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|bottom"
+                    android:layout_marginTop="50dp"
+                    android:padding="5dp"
+                    android:background="@drawable/rounded_edit_text"
+                    android:contentDescription="Camera"
+                    android:src="@drawable/camera_icon" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -85,15 +116,16 @@
                 android:textColor="@color/Black"
                 android:layout_marginTop="8dp" />
 
-            <TextView
-                android:id="@+id/shelf_description"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@drawable/border_2px"
-                android:gravity="top|start"
-                android:padding="12dp"
-                android:layout_marginBottom="10dp"/>
 
+            <EditText
+                android:id="@+id/shelf_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
         </LinearLayout>
 
         <!-- Collection Section -->
@@ -179,7 +211,7 @@
                 android:textSize="15sp"
                 />
             <Button
-                android:id="@+id/third_button"
+                android:id="@+id/save_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_columnSpan="2"
