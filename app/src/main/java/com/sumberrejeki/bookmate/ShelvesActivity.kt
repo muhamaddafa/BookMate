@@ -10,12 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 
 class ShelvesActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var storage: FirebaseStorage
     private lateinit var shelfTitleTextView: TextView
     private lateinit var shelfImageView: ImageView
     private lateinit var shelfDescriptionTextView: TextView
@@ -25,9 +23,8 @@ class ShelvesActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_shelves)
 
-        // Initialize Firestore and Storage
+        // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
-        storage = FirebaseStorage.getInstance()
 
         // Set up the toolbar with arrow back
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -38,15 +35,16 @@ class ShelvesActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow_back)
 
         // Bind views
-        shelfTitleTextView = findViewById(R.id.shelf_title_edit_text) // Update ID for TextView
+        shelfTitleTextView = findViewById(R.id.shelf_title_edit_text)
         shelfImageView = findViewById(R.id.shelf_image_view)
         shelfDescriptionTextView = findViewById(R.id.shelf_description_edit_text)
 
         // Retrieve shelfId passed from the adapter
         val shelfId = intent.getStringExtra("shelfId")
-        Log.d("ShelvesActivity", "Shelf ID: $shelfId") // Tambahkan di sini
+        Log.d("ShelvesActivity", "Shelf ID: $shelfId")
+
         if (shelfId != null) {
-            loadShelfData(shelfId) // Load data using shelfId
+            loadShelfData(shelfId)
         } else {
             Log.e("ShelvesActivity", "No Shelf ID received!")
         }
@@ -57,13 +55,10 @@ class ShelvesActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
+                    // Extract shelf details
                     val title = document.getString("title") ?: "No Title"
                     val description = document.getString("description") ?: "No Description"
-                    val imageUrl = document.getString("imageUrl")
-
-                    // Debug Log
-                    Log.d("ShelvesActivity", "Shelf ID: $shelfId")
-                    Log.d("ShelvesActivity", "Image URL: $imageUrl")
+                    val imageUrl = document.getString("imageUrl") // Image URL saved in Firestore
 
                     // Update UI
                     shelfTitleTextView.text = title
@@ -74,22 +69,20 @@ class ShelvesActivity : AppCompatActivity() {
                         Glide.with(this)
                             .load(imageUrl)
                             .placeholder(R.drawable.image_placeholder)
-                            .skipMemoryCache(true)
+                            .error(R.drawable.image_placeholder) // Tampilkan placeholder jika gagal
                             .into(shelfImageView)
                     } else {
-                        Log.e("ShelvesActivity", "Image URL is empty")
+                        Log.e("ShelvesActivity", "Image URL is null or empty")
                         shelfImageView.setImageResource(R.drawable.image_placeholder)
                     }
                 } else {
-                    Log.e("ShelvesActivity", "No such document!")
+                    Log.e("ShelvesActivity", "No document found for shelfId: $shelfId")
                 }
             }
             .addOnFailureListener { e ->
-                Log.e("ShelvesActivity", "Error fetching document", e)
+                Log.e("ShelvesActivity", "Error fetching shelf data", e)
             }
     }
-
-
 
     // Handle arrow back button click
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
