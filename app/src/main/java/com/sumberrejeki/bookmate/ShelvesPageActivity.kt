@@ -57,7 +57,9 @@ class ShelvesPageActivity : AppCompatActivity() {
         val addBookButton: Button = findViewById(R.id.add_book_button)
         addBookButton.setOnClickListener {
             val intent = Intent(this, BookListShelves::class.java)
-            startActivity(intent)
+            intent.putExtra("shelfId", shelfId)  // Kirim shelfId saat pindah ke BookListShelves
+            startActivityForResult(intent, 1)  // Kirim dengan request code 1
+//            startActivity(intent)
         }
 
         // Terima data dari Intent
@@ -135,11 +137,22 @@ class ShelvesPageActivity : AppCompatActivity() {
     // Tangani hasil gambar dari galeri
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            shelfId = data?.getStringExtra("shelfId")  // Dapatkan shelfId
+            val selectedBooks = data?.getSerializableExtra("SELECTED_BOOKS") as? ArrayList<Books>
+            if (selectedBooks != null) {
+                displayBooks.clear()
+                displayBooks.addAll(selectedBooks)
+                bookAdapter.submitList(displayBooks)
+            }
+            Log.d("ShelvesPageActivity", "Received Books: ${selectedBooks?.size} books, Shelf ID: $shelfId")
+        }
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageUri = data.data ?: return
             shelvesImage.setImageURI(selectedImageUri)
             uploadImageAndUpdateFirestore()
         }
+
     }
 
     // Upload gambar ke Firestore Storage dan perbarui Firestore

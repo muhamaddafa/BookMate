@@ -1,7 +1,9 @@
 package com.sumberrejeki.bookmate
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -50,13 +52,17 @@ class BookListShelves : AppCompatActivity() {
             onBackPressed()
         }
 
+        // Terima shelfId dari Intent
+        val shelfId = intent.getStringExtra("shelfId")
+        Log.d("BookListShelves", "Received Shelf ID: $shelfId")
+
         // Ambil data buku dari Firestore
         fetchBooks(auth.currentUser?.uid ?: "")
 
         // Tombol untuk menambahkan buku yang dipilih
         val addButton: Button = findViewById(R.id.addButton)
         addButton.setOnClickListener {
-            addSelectedBooksToShelves()
+            addSelectedBooksToShelves(shelfId)
         }
     }
 
@@ -75,14 +81,16 @@ class BookListShelves : AppCompatActivity() {
             }
     }
 
-    private fun addSelectedBooksToShelves() {
+    private fun addSelectedBooksToShelves(shelfId: String?) {
         val selectedBooks = bookAdapter.getSelectedBooks()
         if (selectedBooks.isEmpty()) {
             Toast.makeText(this, "No books selected", Toast.LENGTH_SHORT).show()
         } else {
-            val intent = Intent(this, ShelvesPageActivity::class.java)
-            intent.putExtra("SELECTED_BOOKS", ArrayList(selectedBooks))
-            startActivity(intent)
+            val resultIntent = Intent()
+            resultIntent.putExtra("SELECTED_BOOKS", ArrayList(selectedBooks))
+            resultIntent.putExtra("shelfId", shelfId)  // Kirim kembali shelfId
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
         }
     }
 }
