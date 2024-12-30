@@ -119,7 +119,7 @@ class AddShelvesActivity : AppCompatActivity() {
                     // Reset selectedImageUri setelah berhasil
                     selectedImageUri = null
                 }
-                 }.addOnFailureListener {
+            }.addOnFailureListener {
                 progressBar.visibility = View.GONE
                 Toast.makeText(this, "Failed to get image URL", Toast.LENGTH_SHORT).show()
             }
@@ -135,7 +135,7 @@ class AddShelvesActivity : AppCompatActivity() {
     private fun addShelfToFirestore(title: String, description: String, imageUrl: String) {
         val currentUser = auth.currentUser
         if (currentUser == null) {
-            progressBar.visibility = View.GONE // Sembunyikan ProgressBar jika user tidak login
+            progressBar.visibility = View.GONE
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
@@ -143,7 +143,8 @@ class AddShelvesActivity : AppCompatActivity() {
         val userId = currentUser.uid
 
         // Generate ID unik untuk rak
-        val shelfId = UUID.randomUUID().toString()
+        val newShelf = firestore.collection("shelves").document()
+        val shelfId = newShelf.id
 
         val shelfData = hashMapOf(
             "id" to shelfId, // Tambahkan shelfId
@@ -154,7 +155,7 @@ class AddShelvesActivity : AppCompatActivity() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        firestore.collection("shelves").document(shelfId)
+        newShelf
             .set(shelfData)
             .addOnSuccessListener {
                 progressBar.visibility = View.GONE // Sembunyikan ProgressBar saat sukses
