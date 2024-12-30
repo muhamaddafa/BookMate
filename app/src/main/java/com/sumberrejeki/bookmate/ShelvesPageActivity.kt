@@ -1,7 +1,11 @@
 package com.sumberrejeki.bookmate
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -12,20 +16,25 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.sumberrejeki.bookmate.models.Books
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import java.util.UUID
 
 class ShelvesPageActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var bookAdapter: BookAdapterWithCheckBox
     private lateinit var firestore: FirebaseFirestore
-
-    // UI Elements dari layout baru
-    private lateinit var shelfTitle: EditText
-    private lateinit var shelfDescription: EditText
+    private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
+    private val PICK_IMAGE_REQUEST = 1
+    private var shelfId: String? = null
+    private var existingImageUrl: String? = null
+    private lateinit var selectedImageUri: Uri
     private lateinit var shelvesImage: ImageView
-    private lateinit var progressBar: ProgressBar
 
     private var displayBooks: ArrayList<Books> = arrayListOf()
 
@@ -34,12 +43,16 @@ class ShelvesPageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_shelves_page)
 
         firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        storage = FirebaseStorage.getInstance()
 
-        // Inisialisasi UI sesuai dengan layout baru
-        shelfTitle = findViewById(R.id.shelf_title)
-        shelfDescription = findViewById(R.id.shelf_description)
-        shelvesImage = findViewById(R.id.shelves_image)
-        progressBar = findViewById(R.id.progressBar)
+        val shelfId = intent.getStringExtra("shelfId")
+        Log.d("ShelvesPageActivity", "Shelf ID: $shelfId") // Tambahkan di sini
+        if (shelfId != null) {
+            fetchShelfDataFromFirestore(shelfId) // Load data using shelfId
+        } else {
+            Log.e("ShelvesPageActivity", "No Shelf ID received!")
+        }
 
         val addBookButton: Button = findViewById(R.id.add_book_button)
         addBookButton.setOnClickListener {
@@ -80,42 +93,79 @@ class ShelvesPageActivity : AppCompatActivity() {
             deleteSelectedBooks()
         }
 
-        // Ambil data Firestore berdasarkan Shelf ID
-        val shelfId = intent.getStringExtra("SHELF_ID") ?: ""
-        if (shelfId.isNotEmpty()) {
-            fetchShelfDataFromFirestore(shelfId)
+        shelvesImage = findViewById(R.id.shelves_image)
+        shelvesImage.setOnClickListener {
+            selectImage()
         }
     }
 
     // Fungsi untuk mengambil data dari Firestore
     private fun fetchShelfDataFromFirestore(shelfId: String) {
-        progressBar.visibility = ProgressBar.VISIBLE
+        val docRef = firestore.collection("shelves").document(shelfId)
+        docRef.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                val title = document.getString("title") ?: "No Title"
+                val description = document.getString("description") ?: "No Description"
+                existingImageUrl = document.getString("imageUrl")
 
-        firestore.collection("shelves").document(shelfId)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val title = document.getString("title") ?: "No Title"
-                    val description = document.getString("description") ?: "No Description"
-                    val imageUrl = document.getString("imageUrl") ?: ""
+                findViewById<EditText>(R.id.shelf_title).setText(title)
+                findViewById<EditText>(R.id.shelf_description).setText(description)
 
-                    // Update UI dengan data dari Firestore
-                    shelfTitle.setText(title)
-                    shelfDescription.setText(description)
-
-                    // Load image dengan Glide
+                existingImageUrl?.let { url ->
                     Glide.with(this)
-                        .load(imageUrl)
+                        .load(url)
+                        .placeholder(R.drawable.solar_gallery_broken)
                         .into(shelvesImage)
-                } else {
-                    Toast.makeText(this, "Shelf not found", Toast.LENGTH_SHORT).show()
                 }
-                progressBar.visibility = ProgressBar.GONE
+            } else {
+                Toast.makeText(this, "Shelf not found", Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener {
-                progressBar.visibility = ProgressBar.GONE
-                Toast.makeText(this, "Failed to load data", Toast.LENGTH_SHORT).show()
-            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Failed to load data", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    // Pilih gambar baru dari galeri
+    private fun selectImage() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
+
+    // Tangani hasil gambar dari galeri
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data ?: return
+            shelvesImage.setImageURI(selectedImageUri)
+            uploadImageAndUpdateFirestore()
+        }
+    }
+
+    // Upload gambar ke Firestore Storage dan perbarui Firestore
+    private fun uploadImageAndUpdateFirestore() {
+        selectedImageUri?.let { uri ->
+            val fileName = UUID.randomUUID().toString() + ".jpg"
+            val storageRef = storage.reference.child("shelves_images/$fileName")
+
+            storageRef.putFile(uri)
+                .addOnSuccessListener {
+                    storageRef.downloadUrl.addOnSuccessListener { imageUrl ->
+                        // Update Firestore dengan URL gambar baru
+                        shelfId?.let { id ->
+                            firestore.collection("shelves").document(id)
+                                .update("imageUrl", imageUrl.toString())
+                                .addOnSuccessListener {
+                                    Glide.with(this).load(imageUrl).into(shelvesImage)
+                                    Toast.makeText(this, "Shelf updated!", Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun deleteSelectedBooks() {
@@ -129,4 +179,7 @@ class ShelvesPageActivity : AppCompatActivity() {
         bookAdapter.submitList(displayBooks)
         Toast.makeText(this, "Selected books deleted", Toast.LENGTH_SHORT).show()
     }
+
 }
+
+

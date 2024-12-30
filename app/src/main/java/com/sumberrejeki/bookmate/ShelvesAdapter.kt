@@ -49,6 +49,7 @@ class ShelvesAdapter(private var shelvesList: List<Shelf>) : RecyclerView.Adapte
         holder.editButtonLayout.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, ShelvesPageActivity::class.java)
+            intent.putExtra("shelfId", shelf.id)
             context.startActivity(intent)
         }
     }
