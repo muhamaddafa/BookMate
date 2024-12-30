@@ -31,6 +31,8 @@ class ShelvesAdapter(private var shelvesList: List<Shelf>) : RecyclerView.Adapte
         // Load image using Glide
         Glide.with(holder.itemView.context)
             .load(shelf.imageUrl)
+            .placeholder(R.drawable.image_placeholder) // Gambar default saat memuat
+            .error(R.drawable.image_placeholder) // Gambar default jika gagal
             .into(holder.imageView)
 
         // Set data
@@ -41,7 +43,7 @@ class ShelvesAdapter(private var shelvesList: List<Shelf>) : RecyclerView.Adapte
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, ShelvesActivity::class.java)
-            intent.putExtra("shelfId", shelf.id) // Pass additional data if needed
+            intent.putExtra("shelfId", shelf.id) // Pass shelfId to ShelvesActivity
             context.startActivity(intent)
         }
 
@@ -49,11 +51,10 @@ class ShelvesAdapter(private var shelvesList: List<Shelf>) : RecyclerView.Adapte
         holder.editButtonLayout.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, ShelvesPageActivity::class.java)
-            intent.putExtra("shelfId", shelf.id)
+            intent.putExtra("shelfId", shelf.id) // Pass shelfId for editing
             context.startActivity(intent)
         }
     }
-
 
     override fun getItemCount(): Int {
         return shelvesList.size

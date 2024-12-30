@@ -103,20 +103,33 @@ class AddShelvesActivity : AppCompatActivity() {
         // Tampilkan ProgressBar
         progressBar.visibility = View.VISIBLE
 
-        val storageRef = storage.reference.child("shelves_images/${UUID.randomUUID()}.jpg")
+        // Generate unique file name
+        val uniqueFileName = UUID.randomUUID().toString()
+        val storageRef = storage.reference.child("shelves_images/$uniqueFileName.jpg")
 
+        // Mulai upload file
         storageRef.putFile(selectedImageUri!!)
             .addOnSuccessListener {
+                // Ambil URL dari gambar yang diunggah
                 storageRef.downloadUrl.addOnSuccessListener { uri ->
                     val imageUrl = uri.toString()
+                    // Tambahkan rak ke Firestore
                     addShelfToFirestore(title, description, imageUrl)
+
+                    // Reset selectedImageUri setelah berhasil
+                    selectedImageUri = null
                 }
+                 }.addOnFailureListener {
+                progressBar.visibility = View.GONE
+                Toast.makeText(this, "Failed to get image URL", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                progressBar.visibility = View.GONE // Sembunyikan ProgressBar saat gagal
+                // Sembunyikan ProgressBar saat gagal
+                progressBar.visibility = View.GONE
                 Toast.makeText(this, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     // Tambah rak ke Firestore
     private fun addShelfToFirestore(title: String, description: String, imageUrl: String) {
@@ -129,7 +142,11 @@ class AddShelvesActivity : AppCompatActivity() {
 
         val userId = currentUser.uid
 
+        // Generate ID unik untuk rak
+        val shelfId = UUID.randomUUID().toString()
+
         val shelfData = hashMapOf(
+            "id" to shelfId, // Tambahkan shelfId
             "title" to title,
             "description" to description,
             "imageUrl" to imageUrl,
@@ -137,7 +154,7 @@ class AddShelvesActivity : AppCompatActivity() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        firestore.collection("shelves").document(title)
+        firestore.collection("shelves").document(shelfId)
             .set(shelfData)
             .addOnSuccessListener {
                 progressBar.visibility = View.GONE // Sembunyikan ProgressBar saat sukses
