@@ -5,5 +5,6 @@ data class Shelf (
     val imageUrl: String? = null,
     val title: String? = null,
     val description: String? = null,
-    val userId: String? = null
+    val userId: String? = null,
+    val books: List<String>? = listOf()
 )
