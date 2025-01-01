@@ -72,9 +72,12 @@ class BookListShelves : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 val bookList = documents.map { document ->
-                    document.toObject(Books::class.java)
+                    document.toObject(Books::class.java).apply {
+                        this.id = document.id  // Set Firestore ID ke dalam objek Books
+                    }
                 }
                 bookAdapter.submitList(bookList)
+                Log.d("BookListShelves", "Fetched Books: ${bookList.map { it.id }}")  // Log ID buku
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error fetching books: ${exception.message}", Toast.LENGTH_SHORT).show()
@@ -83,11 +86,12 @@ class BookListShelves : AppCompatActivity() {
 
     private fun addSelectedBooksToShelves(shelfId: String?) {
         val selectedBooks = bookAdapter.getSelectedBooks()
+        val selectedBooksWithIds = selectedBooks.filter { it.id != null }  // Filter buku tanpa ID
         if (selectedBooks.isEmpty()) {
             Toast.makeText(this, "No books selected", Toast.LENGTH_SHORT).show()
         } else {
             val resultIntent = Intent()
-            resultIntent.putExtra("SELECTED_BOOKS", ArrayList(selectedBooks))
+            resultIntent.putExtra("SELECTED_BOOKS", ArrayList(selectedBooksWithIds))
             resultIntent.putExtra("shelfId", shelfId)  // Kirim kembali shelfId
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
