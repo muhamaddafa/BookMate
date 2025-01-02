@@ -79,28 +79,47 @@ class ProfileFragment : BaseAuthFragment() {
 
     private fun updateUserData() {
         val user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            val userId = it.uid
-            val userData = hashMapOf(
-                "displayName" to view?.findViewById<TextInputEditText>(R.id.usernameInput)?.text.toString(),
-                "firstName" to view?.findViewById<TextInputEditText>(R.id.firstNameInput)?.text.toString(),
-                "lastName" to view?.findViewById<TextInputEditText>(R.id.lastNameInput)?.text.toString(),
-                "email" to view?.findViewById<TextInputEditText>(R.id.emailInput)?.text.toString(),
-                "address" to view?.findViewById<TextInputEditText>(R.id.addressInput)?.text.toString(),
-                "city" to view?.findViewById<TextInputEditText>(R.id.cityInput)?.text.toString(),
-                "state" to view?.findViewById<TextInputEditText>(R.id.stateInput)?.text.toString(),
-                "zipCode" to view?.findViewById<TextInputEditText>(R.id.zipCodeInput)?.text.toString(),
-                "country" to view?.findViewById<TextInputEditText>(R.id.countryInput)?.text.toString()
-            )
+        user?.let { firebaseUser ->
+            val userId = firebaseUser.uid
 
+            // First, get the current document to preserve photoUrl
             val db = FirebaseFirestore.getInstance()
             db.collection("users").document(userId)
-                .set(userData)
-                .addOnSuccessListener {
-                    Toast.makeText(activity, "Data updated successfully", Toast.LENGTH_SHORT).show()
+                .get()
+                .addOnSuccessListener { document ->
+                    // Get the existing photoUrl
+                    val existingPhotoUrl = document.getString("photoUrl")
+
+                    // Create userData map with all fields
+                    val userData = hashMapOf(
+                        "displayName" to view?.findViewById<TextInputEditText>(R.id.usernameInput)?.text.toString(),
+                        "firstName" to view?.findViewById<TextInputEditText>(R.id.firstNameInput)?.text.toString(),
+                        "lastName" to view?.findViewById<TextInputEditText>(R.id.lastNameInput)?.text.toString(),
+                        "email" to view?.findViewById<TextInputEditText>(R.id.emailInput)?.text.toString(),
+                        "address" to view?.findViewById<TextInputEditText>(R.id.addressInput)?.text.toString(),
+                        "city" to view?.findViewById<TextInputEditText>(R.id.cityInput)?.text.toString(),
+                        "state" to view?.findViewById<TextInputEditText>(R.id.stateInput)?.text.toString(),
+                        "zipCode" to view?.findViewById<TextInputEditText>(R.id.zipCodeInput)?.text.toString(),
+                        "country" to view?.findViewById<TextInputEditText>(R.id.countryInput)?.text.toString()
+                    )
+
+                    // Add the existing photoUrl to the userData map if it exists
+                    existingPhotoUrl?.let {
+                        userData["photoUrl"] = it
+                    }
+
+                    // Update the document with the new data
+                    db.collection("users").document(userId)
+                        .set(userData)
+                        .addOnSuccessListener {
+                            Toast.makeText(activity, "Data updated successfully", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(activity, "Error updating data: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(activity, "Error updating data: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Error retrieving current data: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
