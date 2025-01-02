@@ -181,45 +181,6 @@
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Radio Group for Book Type -->
-        <TextView
-            android:id="@+id/bookTypeLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="What type of book do you read?"
-            android:textColor="@color/Black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:id="@+id/bookTypeGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/paperBook"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gradient_color"
-                android:text="Paper Book"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:layout_marginRight="5dp"/>
-
-            <Button
-                android:id="@+id/eBook"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gradient_color"
-                android:text="E-book"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="5dp"/>
-        </LinearLayout>
-
         <!-- Description -->
         <TextView
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.sumberrejeki.bookmate
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -8,8 +9,12 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sumberrejeki.bookmate.models.Books
 
 class ShelvesActivity : AppCompatActivity() {
 
@@ -18,13 +23,23 @@ class ShelvesActivity : AppCompatActivity() {
     private lateinit var shelfImageView: ImageView
     private lateinit var shelfDescriptionTextView: TextView
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var bookAdapter: BookAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_shelves)
+        recyclerView = findViewById(R.id.booksRecyclerView)
 
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
+
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columns
+        bookAdapter = BookAdapter { book ->
+            navigateToBookDetail(book)
+        }
+        recyclerView.adapter = bookAdapter
 
         // Set up the toolbar with arrow back
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -59,21 +74,27 @@ class ShelvesActivity : AppCompatActivity() {
                     val title = document.getString("title") ?: "No Title"
                     val description = document.getString("description") ?: "No Description"
                     val imageUrl = document.getString("imageUrl") // Image URL saved in Firestore
+                    val bookIds = document.get("books") as? List<String> ?: emptyList()
 
-                    // Update UI
+                    // Update UI with shelf details
                     shelfTitleTextView.text = title
                     shelfDescriptionTextView.text = description
 
                     if (!imageUrl.isNullOrEmpty()) {
-                        Log.d("ShelvesActivity", "Loading image from URL: $imageUrl")
                         Glide.with(this)
                             .load(imageUrl)
                             .placeholder(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder) // Tampilkan placeholder jika gagal
+                            .error(R.drawable.image_placeholder)
                             .into(shelfImageView)
                     } else {
-                        Log.e("ShelvesActivity", "Image URL is null or empty")
                         shelfImageView.setImageResource(R.drawable.image_placeholder)
+                    }
+
+                    // Fetch books associated with this shelf
+                    if (bookIds.isNotEmpty()) {
+                        fetchBooks(bookIds)
+                    } else {
+                        Log.d("ShelvesActivity", "No books associated with this shelf.")
                     }
                 } else {
                     Log.e("ShelvesActivity", "No document found for shelfId: $shelfId")
@@ -82,6 +103,28 @@ class ShelvesActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.e("ShelvesActivity", "Error fetching shelf data", e)
             }
+    }
+
+    private fun fetchBooks(bookIds: List<String>) {
+        firestore.collection("books")
+            .whereIn(FieldPath.documentId(), bookIds)
+            .get()
+            .addOnSuccessListener { result ->
+                val books = result.map { document ->
+                    document.toObject(Books::class.java) // Assuming `Books` is your data model
+                }
+                bookAdapter.submitList(books)
+            }
+            .addOnFailureListener { e ->
+                Log.e("ShelvesActivity", "Error fetching books", e)
+            }
+    }
+
+    private fun navigateToBookDetail(book: Books) {
+        val intent = Intent(this, BookScreenActivity::class.java)
+        intent.putExtra("BOOK_TITLE", book.title)
+        intent.putExtra("BOOK_ID", book.id)
+        startActivity(intent)
     }
 
     // Handle arrow back button click

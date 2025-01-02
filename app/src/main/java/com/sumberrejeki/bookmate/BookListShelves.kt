@@ -29,70 +29,93 @@ class BookListShelves : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         recyclerView = findViewById(R.id.recyclerViewBooks)
 
-        // Inisialisasi adapter dengan callback
+        // Initialize adapter with callback
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         bookAdapter = BookAdapterWithCheckBox(
             onItemClick = { book ->
-                Toast.makeText(this, "Clicked: ${book.title}", Toast.LENGTH_SHORT).show()
             },
             onCheckedChange = { book, isChecked ->
-                if (isChecked) {
-                    Toast.makeText(this, "${book.title} selected", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "${book.title} unselected", Toast.LENGTH_SHORT).show()
-                }
             }
         )
         recyclerView.adapter = bookAdapter
 
-        // Inisialisasi Toolbar
+        // Initialize Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 
-        // Terima shelfId dari Intent
+        // Get shelfId from Intent
         val shelfId = intent.getStringExtra("shelfId")
         Log.d("BookListShelves", "Received Shelf ID: $shelfId")
 
-        // Ambil data buku dari Firestore
-        fetchBooks(auth.currentUser?.uid ?: "")
+        // Fetch books excluding those already in the shelf
+        if (shelfId != null) {
+            fetchBooksNotInShelf(auth.currentUser?.uid ?: "", shelfId)
+        } else {
+            Toast.makeText(this, "Error: Shelf ID not found", Toast.LENGTH_SHORT).show()
+            finish()
+        }
 
-        // Tombol untuk menambahkan buku yang dipilih
+        // Button to add selected books
         val addButton: Button = findViewById(R.id.addButton)
         addButton.setOnClickListener {
             addSelectedBooksToShelves(shelfId)
         }
     }
 
-    private fun fetchBooks(userId: String) {
-        db.collection("books")
-            .whereEqualTo("userId", userId)
+    private fun fetchBooksNotInShelf(userId: String, shelfId: String) {
+        // First, get the existing books in the shelf
+        db.collection("shelves")
+            .document(shelfId)
             .get()
-            .addOnSuccessListener { documents ->
-                val bookList = documents.map { document ->
-                    document.toObject(Books::class.java).apply {
-                        this.id = document.id  // Set Firestore ID ke dalam objek Books
+            .addOnSuccessListener { shelfDoc ->
+                // Get the array of book IDs from the shelf
+                val existingBookIds = shelfDoc.get("books") as? List<String> ?: listOf()
+
+                // Then fetch all user's books that are not in the shelf
+                db.collection("books")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        val bookList = documents.mapNotNull { document ->
+                            // Only include books that are not in the shelf
+                            if (!existingBookIds.contains(document.id)) {
+                                document.toObject(Books::class.java).apply {
+                                    this.id = document.id
+                                }
+                            } else null
+                        }
+                        bookAdapter.submitList(bookList)
+                        Log.d("BookListShelves", "Fetched Books (not in shelf): ${bookList.map { it.id }}")
                     }
-                }
-                bookAdapter.submitList(bookList)
-                Log.d("BookListShelves", "Fetched Books: ${bookList.map { it.id }}")  // Log ID buku
+                    .addOnFailureListener { exception ->
+                        Toast.makeText(
+                            this,
+                            "Error fetching books: ${exception.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error fetching books: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Error fetching shelf data: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 
     private fun addSelectedBooksToShelves(shelfId: String?) {
         val selectedBooks = bookAdapter.getSelectedBooks()
-        val selectedBooksWithIds = selectedBooks.filter { it.id != null }  // Filter buku tanpa ID
+        val selectedBooksWithIds = selectedBooks.filter { it.id != null }
         if (selectedBooks.isEmpty()) {
             Toast.makeText(this, "No books selected", Toast.LENGTH_SHORT).show()
         } else {
             val resultIntent = Intent()
             resultIntent.putExtra("SELECTED_BOOKS", ArrayList(selectedBooksWithIds))
-            resultIntent.putExtra("shelfId", shelfId)  // Kirim kembali shelfId
+            resultIntent.putExtra("shelfId", shelfId)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
